@@ -16,6 +16,7 @@ export interface Question {
   score?: number; // Disabled for free-text questions
   disqualifier?: boolean;
   enableScoring?: boolean;
+  isOpen?: boolean; // For accordion behavior
 }
 
 // New types for the screening data structure
@@ -38,12 +39,11 @@ export interface QuestionCardProps {
   onAddOption?: (questionId: string) => void;
   onDeleteOption?: (questionId: string, optionId: string) => void;
   onUpdateOption?: (questionId: string, optionId: string, updates: Partial<QuestionOption>) => void;
-  onDragStart?: (e: React.DragEvent, index: number) => void;
-  onDragOver?: (e: React.DragEvent, index: number) => void;
-  onDrop?: (e: React.DragEvent, index: number) => void;
-  onDragEnd?: (e: React.DragEvent) => void;
-  isDragging?: boolean;
-  dragOverIndex?: number | null;
+  onDrop: (dragIndex: number, hoverIndex: number) => void;
+  onHover?: (hoverIndex: number | null) => void;
+  onDragStart?: (dragIndex: number) => void;
+  onDragEnd?: () => void;
+  draggedIndex: number | null;
 }
 
 export interface AddQuestionButtonProps {

@@ -11,7 +11,9 @@ type ButtonVariant =
   | "ghost" 
   | "link" 
   | "response-yes" 
-  | "response-no";
+  | "response-no"
+  | "icon"
+  | "icon-active";
 
 type ButtonSize = "default" | "sm" | "lg" | "icon";
 
@@ -27,6 +29,8 @@ const getVariantClasses = (variant: ButtonVariant = "default") => {
     link: "text-blue-600 underline-offset-4 hover:underline",
     "response-yes": "border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg",
     "response-no": "border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg",
+    icon: "bg-transparent text-blue-600 hover:bg-gray-50 border-none shadow-none focus:ring-0 focus:ring-offset-0",
+    "icon-active": "bg-blue-50 text-blue-600 border-none shadow-none focus:ring-0 focus:ring-offset-0",
   };
   return variants[variant];
 };

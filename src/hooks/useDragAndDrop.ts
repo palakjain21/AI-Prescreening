@@ -1,63 +1,94 @@
-import { useCallback } from "react";
+import { useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import type { Identifier } from "dnd-core";
+
+const QUESTION_CARD_TYPE = 'QUESTION_CARD';
+
+interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+}
 
 interface UseDragAndDropProps {
+  id: string;
   index: number;
-  onDragStart?: (e: React.DragEvent, index: number) => void;
-  onDragOver?: (e: React.DragEvent, index: number) => void;
-  onDrop?: (e: React.DragEvent, index: number) => void;
-  onDragEnd?: (e: React.DragEvent) => void;
+  onDrop: (dragIndex: number, hoverIndex: number) => void;
+  onHover?: (hoverIndex: number | null) => void;
+  onDragStart?: (dragIndex: number) => void;
+  onDragEnd?: () => void;
 }
 
 export const useDragAndDrop = ({
+  id,
   index,
-  onDragStart,
-  onDragOver,
   onDrop,
+  onHover,
+  onDragStart,
   onDragEnd,
 }: UseDragAndDropProps) => {
-  const handleDragStart = useCallback((e: React.DragEvent) => {
-    // Prevent dragging when clicking directly on interactive elements (but allow from handle)
-    const target = e.target as HTMLElement;
-    const isDragHandle = target.closest('[title="Drag to reorder"]');
-    
-    // Allow dragging from handle, but prevent from buttons/inputs/selects
-    if (!isDragHandle && (
-      target.tagName === 'BUTTON' ||
-      target.tagName === 'INPUT' ||
-      target.tagName === 'SELECT' ||
-      target.closest('button:not([title="Drag to reorder"])') ||
-      target.closest('input') ||
-      target.closest('select')
-    )) {
-      e.preventDefault();
-      return;
-    }
-    
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', index.toString());
-    onDragStart?.(e, index);
-  }, [index, onDragStart]);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    onDragOver?.(e, index);
-  }, [index, onDragOver]);
+  const [{ handlerId, isOver }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null; isOver: boolean }>({
+    accept: QUESTION_CARD_TYPE,
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+        isOver: monitor.isOver(),
+      };
+    },
+    hover(item: DragItem) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    onDrop?.(e, index);
-  }, [index, onDrop]);
+      // Don't do anything if hovering over itself
+      if (dragIndex === hoverIndex) {
+        onHover?.(null);
+        return;
+      }
 
-  const handleDragEnd = useCallback((e: React.DragEvent) => {
-    onDragEnd?.(e);
-  }, [onDragEnd]);
+      // Just notify about hover for visual feedback
+      onHover?.(hoverIndex);
+    },
+    drop(item: DragItem) {
+      const dragIndex = item.index;
+      const dropIndex = index;
+
+      // Only perform the move on drop
+      if (dragIndex !== dropIndex) {
+        onDrop(dragIndex, dropIndex);
+      }
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: QUESTION_CARD_TYPE,
+    item: () => {
+      onDragStart?.(index);
+      return { id, index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+    end: () => {
+      // Clear states when drag ends
+      onHover?.(null);
+      onDragEnd?.();
+    },
+  });
+
+  // Connect drag and drop to the same ref
+  drag(drop(ref));
 
   return {
-    handleDragStart,
-    handleDragOver,
-    handleDrop,
-    handleDragEnd,
+    ref,
+    isDragging,
+    isOver,
+    handlerId,
+    drag,
   };
 };
 

@@ -8,10 +8,10 @@ export interface HeaderProps {
 const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
   ({ className = "" }, ref) => {
     return (
-      <div ref={ref} className={`bg-white border-b border-gray-200 ${className}`}>
-        <div className="px-6 py-4">
+      <div ref={ref} className={`bg-white border-gray-200 w-full ${className}`}>
+        <div className="px-6">
           {/* Top Row - Back Navigation */}
-          <div className="flex items-center mb-6">
+          <div className="flex items-center mb-6 h-[82px] border-b border-gray-200">
             <div className="flex items-center space-x-2">
               <div className="flex items-center justify-center w-6 h-6 cursor-pointer">
                 <span className="text-gray-600 text-base font-medium">&larr;</span>

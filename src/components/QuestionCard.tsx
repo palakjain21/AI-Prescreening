@@ -10,8 +10,9 @@ import {
   Input,
   Select,
   Toggle,
+  DeleteModal,
 } from "./index";
-import { Plus, Trash2 } from "./icons";
+import { Plus, Trash2, ChevronDown, ChevronUp } from "./icons";
 import { OptionRow } from "./OptionRow";
 import { DragHandle } from "./DragHandle";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
@@ -28,17 +29,18 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
     onAddOption,
     onDeleteOption,
     onUpdateOption,
-    onDragStart,
-    onDragOver,
     onDrop,
+    onHover,
+    onDragStart,
     onDragEnd,
-    isDragging = false,
-    dragOverIndex = null,
+    draggedIndex,
     ...props 
   }, ref) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isEditingTitle, setIsEditingTitle] = useState(false);
     const [titleValue, setTitleValue] = useState(question.title || question.question || '');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isOpen, setIsOpen] = useState(question.isOpen ?? true);
 
     const handleTitleSubmit = () => {
       if (question.id) {
@@ -88,6 +90,14 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       }
     };
 
+    const handleToggleOpen = () => {
+      const newIsOpen = !isOpen;
+      setIsOpen(newIsOpen);
+      if (question.id) {
+        onQuestionUpdate(question.id, { isOpen: newIsOpen });
+      }
+    };
+
 
     const handleAddOption = () => {
       if (!onAddOption || !question.id) return;
@@ -122,31 +132,40 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       }
     };
 
-    const isDragOver = dragOverIndex === index && !isDragging;
-    const isDraggingThis = isDragging;
-
-    const { handleDragStart, handleDragOver, handleDrop, handleDragEnd } = useDragAndDrop({
+    const { ref: dndRef, isDragging, isOver, drag } = useDragAndDrop({
+      id: question.id || '',
       index,
-      onDragStart,
-      onDragOver,
       onDrop,
+      onHover,
+      onDragStart,
       onDragEnd,
     });
 
+    // Merge refs (external ref and dnd ref)
+    const mergedRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        dndRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      },
+      [ref, dndRef]
+    );
+
+    // Check if this card is being hovered over during drag
+    const isBeingHoveredDuringDrag = isOver && draggedIndex !== null && draggedIndex !== index;
+
     return (
       <Card
-        ref={ref}
+        ref={mergedRef}
         variant="question"
-        draggable
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        onDragEnd={handleDragEnd}
         className={cn(
           "relative group transition-all duration-200",
           isHovered && "shadow-md border-blue-200",
-          isDraggingThis && "opacity-50 cursor-grabbing",
-          isDragOver && "border-blue-400 border-2 shadow-lg"
+          isDragging && "opacity-50 cursor-grabbing",
+          isBeingHoveredDuringDrag && "border-blue-400 border-2 shadow-lg"
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -168,7 +187,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
               variant="outline"
               size="icon"
               className="h-8 w-8 bg-white shadow-md hover:bg-red-50 border-red-200 text-red-600 hover:text-red-700"
-              onClick={() => question.id && onDeleteQuestion(question.id)}
+              onClick={() => setShowDeleteModal(true)}
               title="Delete this question"
             >
               <Trash2 className="h-4 w-4" />
@@ -177,26 +196,48 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
         )}
 
         {/* Drag Handle */}
-        <DragHandle isDragging={isDraggingThis} />
+        <DragHandle isDragging={isDragging} dragRef={drag} />
 
         <CardHeader className="pb-4 px-2">
-          {/* Badges at top */}
-          <div className="flex items-center gap-2 mb-4">
-            <Badge variant={question.type as any}>
-              {getQuestionTypeBadgeText(question.type)}
-            </Badge>
-            
-            {question.disqualifier && (
-              <Badge variant="destructive">
-                Disqualifier
+          {/* Badges and Toggle Row */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Badge variant={question.type as any}>
+                {getQuestionTypeBadgeText(question.type)}
               </Badge>
-            )}
-            
-            {question.enableScoring && (
-              <Badge variant="secondary">
-                Eligibility
-              </Badge>
-            )}
+              
+              {question.disqualifier && (
+                <Badge variant="destructive">
+                  Disqualifier
+                </Badge>
+              )}
+              
+              {question.enableScoring && (
+                <Badge variant="secondary">
+                  Eligibility
+                </Badge>
+              )}
+
+              {/* Technical Skills badge for free-text questions */}
+              {question.type === 'free-text' && (
+                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                  Technical Skills
+                </Badge>
+              )}
+            </div>
+
+            {/* Chevron Toggle */}
+            <button
+              onClick={handleToggleOpen}
+              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              title={isOpen ? "Collapse question" : "Expand question"}
+            >
+              {isOpen ? (
+                <ChevronUp className="h-5 w-5 text-gray-500" />
+              ) : (
+                <ChevronDown className="h-5 w-5 text-gray-500" />
+              )}
+            </button>
           </div>
 
           {/* Question Title */}
@@ -220,91 +261,142 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             )}
           </div>
 
-          {/* Controls Row */}
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Select
-                options={[
-                  { value: 'single-choice', label: 'Single Choice' },
-                  { value: 'multiple-choice', label: 'Multiple Choice' },
-                  { value: 'free-text', label: 'Free Text' },
-                ]}
-                value={question.type}
-                onValueChange={(value) => handleTypeChange(value as Question['type'])}
-                className="h-9 w-[160px] text-sm"
-              />
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-regular">Disqualifier</span>
-                <Toggle
-                  checked={question.disqualifier || false}
-                  onCheckedChange={handleDisqualifierChange}
-                />
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-regular">Enable Scoring</span>
-                <Toggle
-                  checked={question.enableScoring || false}
-                  onCheckedChange={handleEnableScoringChange}
-                />
-              </div>
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardContent className="px-4 space-y-2">
-
-          {/* Options for Choice Questions */}
-          {(question.type === 'single-choice' || question.type === 'multiple-choice') && (
-            <div className="space-y-1">
-              
-              {/* Options list */}
-              <div className="space-y-2">
-                {question.options?.map((option, index) => (
-                  <OptionRow
+          {/* Collapsed View - Options as Pills */}
+          {!isOpen && (question.type === 'single-choice' || question.type === 'multiple-choice') && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {question.options?.map((option, index) => {
+                const hasZeroScore = question.enableScoring && option.score === 0;
+                return (
+                  <div
                     key={option.id || `option-${index}`}
-                    option={option}
-                    index={index}
-                    questionType={question.type}
-                    enableScoring={question.enableScoring || false}
-                    onUpdateText={(text) => option.id && handleUpdateOptionText(option.id, text)}
-                    onUpdateScore={(score) => option.id && handleUpdateOptionScore(option.id, score)}
-                    onDelete={() => option.id && handleDeleteOption(option.id)}
-                    canDelete={question.options ? question.options.length > 1 : false}
-                  />
-                ))}
-              </div>
-              
-              {/* Add option button - moved below all options */}
-              <div className="pt-2">
-                <Button
-                  variant="neutral"
-                  size="sm"
-                  onClick={handleAddOption}
-                  className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 h-auto"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span className="text-sm">Add option</span>
-                </Button>
-              </div>
+                    className={cn(
+                      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors",
+                      hasZeroScore
+                        ? "bg-red-50 text-red-700 border-red-300"
+                        : "bg-gray-50 text-gray-700 border-gray-200"
+                    )}
+                  >
+                    <span>{option.text}</span>
+                    {question.enableScoring && (
+                      <span className="text-xs font-medium">{option.score}</span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
 
-          {/* Free Text Preview */}
-          {question.type === 'free-text' && (
-            <div className="space-y-2">
-              <label className="text-xs font-medium text-gray-500 uppercase">Response Area</label>
-              <div className="p-3 border border-gray-200 rounded-md bg-gray-50">
-                <div className="min-h-[80px] bg-white border border-gray-200 rounded-md p-3">
-                  <span className="text-gray-400 text-sm">Candidate will type their answer here...</span>
+          {/* Controls Row - Only show when expanded */}
+          {isOpen && (
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Select
+                  options={[
+                    { value: 'single-choice', label: 'Single Choice' },
+                    { value: 'multiple-choice', label: 'Multiple Choice' },
+                    { value: 'free-text', label: 'Free Text' },
+                  ]}
+                  value={question.type}
+                  onValueChange={(value) => handleTypeChange(value as Question['type'])}
+                  className="h-9 w-[160px] text-sm"
+                />
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-regular">Disqualifier</span>
+                  <Toggle
+                    checked={question.disqualifier || false}
+                    onCheckedChange={handleDisqualifierChange}
+                  />
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-regular">Enable Scoring</span>
+                  <Toggle
+                    checked={question.enableScoring || false}
+                    onCheckedChange={handleEnableScoringChange}
+                  />
                 </div>
               </div>
             </div>
           )}
-        </CardContent>
+        </CardHeader>
+
+        {/* Expanded Content */}
+        {isOpen && (
+          <CardContent className="px-4 space-y-2">
+            {/* Options for Choice Questions */}
+            {(question.type === 'single-choice' || question.type === 'multiple-choice') && (
+              <div className="space-y-1">
+                {/* Options list */}
+                <div className="space-y-2">
+                  {question.options?.map((option, index) => {
+                    const hasZeroScore = question.enableScoring && option.score === 0;
+                    return (
+                      <div
+                        key={option.id || `option-${index}`}
+                        className={cn(
+                          "transition-all duration-200",
+                          hasZeroScore && "ring-2 ring-red-300 rounded-md"
+                        )}
+                      >
+                        <OptionRow
+                          option={option}
+                          index={index}
+                          questionType={question.type}
+                          enableScoring={question.enableScoring || false}
+                          onUpdateText={(text) => option.id && handleUpdateOptionText(option.id, text)}
+                          onUpdateScore={(score) => option.id && handleUpdateOptionScore(option.id, score)}
+                          onDelete={() => option.id && handleDeleteOption(option.id)}
+                          canDelete={question.options ? question.options.length > 1 : false}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Add option button - moved below all options */}
+                <div className="pt-2">
+                  <Button
+                    variant="neutral"
+                    size="sm"
+                    onClick={handleAddOption}
+                    className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 h-auto"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="text-sm">Add option</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Free Text Preview */}
+            {question.type === 'free-text' && (
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-gray-500 uppercase">Response Area</label>
+                <div className="p-3 border border-gray-200 rounded-md bg-gray-50">
+                  <div className="min-h-[80px] bg-white border border-gray-200 rounded-md p-3">
+                    <span className="text-gray-400 text-sm">Candidate will type their answer here...</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        <DeleteModal
+          open={showDeleteModal}
+          onOpenChange={setShowDeleteModal}
+          onConfirm={() => {
+            if (question.id) {
+              onDeleteQuestion(question.id);
+            }
+          }}
+          title="Delete Question"
+          description="Are you sure you want to delete the question from the Prescreening Chat Flow?"
+        />
       </Card>
     );
   }

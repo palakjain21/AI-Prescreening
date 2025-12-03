@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { QuestionCard, AddQuestionButton } from './QuestionCard';
 import { Card, CardContent, Button, GreetingMessage, EndingMessage } from './index';
 import type { Question, QuestionOption, ScreeningData } from '../types';
@@ -13,9 +13,8 @@ const ScreeningQuestions: React.FC = () => {
   // Initialize with local data first, then fetch from API
   const [screeningData, setScreeningData] = useState<ScreeningData>(() => loadScreeningData());
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     // Fetch data from API on component mount
@@ -146,45 +145,32 @@ const ScreeningQuestions: React.FC = () => {
     updateJsonData(updatedQuestions);
   };
 
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = 'move';
-  };
+  const handleDragStart = useCallback((dragIndex: number) => {
+    setDraggedIndex(dragIndex);
+  }, []);
 
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggedIndex === null || draggedIndex === index) return;
-    setDragOverIndex(index);
-  };
+  const handleDragEnd = useCallback(() => {
+    setDraggedIndex(null);
+  }, []);
 
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
-      setDragOverIndex(null);
-      return;
-    }
-
+  const handleDrop = useCallback((dragIndex: number, dropIndex: number) => {
     const newQuestions = [...questions];
-    const draggedQuestion = newQuestions[draggedIndex];
+    const draggedQuestion = newQuestions[dragIndex];
     
     // Remove the dragged question from its original position
-    newQuestions.splice(draggedIndex, 1);
+    newQuestions.splice(dragIndex, 1);
     
     // Insert it at the new position
     newQuestions.splice(dropIndex, 0, draggedQuestion);
     
     setQuestions(newQuestions);
     updateJsonData(newQuestions);
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
+  }, [questions]);
 
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
+  const handleHover = useCallback((_hoverIndex: number | null) => {
+    // Currently just for visual feedback in individual cards
+    // Can be extended for drop indicators between cards if needed
+  }, []);
 
   // Show loading state while fetching data
   if (isLoading) {
@@ -246,32 +232,22 @@ const ScreeningQuestions: React.FC = () => {
       <div className="space-y-4">
         
         {questions.map((question, index) => (
-          <React.Fragment key={question.id}>
-            {/* Drop indicator line above the card */}
-            {dragOverIndex === index && draggedIndex !== null && draggedIndex < index && (
-              <div className="h-1 bg-blue-500 rounded-full mx-4 transition-all" />
-            )}
-            <QuestionCard
-              question={question}
-              index={index}
-              onQuestionUpdate={handleQuestionUpdate}
-              onAddQuestion={handleAddQuestion}
-              onDeleteQuestion={handleDeleteQuestion}
-              onAddOption={handleAddOption}
-              onDeleteOption={handleDeleteOption}
-              onUpdateOption={handleUpdateOption}
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onDragEnd={handleDragEnd}
-              isDragging={draggedIndex === index}
-              dragOverIndex={dragOverIndex}
-            />
-            {/* Drop indicator line below the card */}
-            {dragOverIndex === index && draggedIndex !== null && draggedIndex > index && (
-              <div className="h-1 bg-blue-500 rounded-full mx-4 transition-all" />
-            )}
-          </React.Fragment>
+          <QuestionCard
+            key={question.id}
+            question={question}
+            index={index}
+            onQuestionUpdate={handleQuestionUpdate}
+            onAddQuestion={handleAddQuestion}
+            onDeleteQuestion={handleDeleteQuestion}
+            onAddOption={handleAddOption}
+            onDeleteOption={handleDeleteOption}
+            onUpdateOption={handleUpdateOption}
+            onDrop={handleDrop}
+            onHover={handleHover}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            draggedIndex={draggedIndex}
+          />
         ))}
         
         <AddQuestionButton onAddQuestion={() => handleAddQuestion()} />

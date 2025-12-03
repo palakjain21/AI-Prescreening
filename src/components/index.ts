@@ -52,7 +52,7 @@ export type { NumberInputProps } from "./NumberInput";
 export { QuestionCard, AddQuestionButton } from "./QuestionCard";
 export { OptionRow } from "./OptionRow";
 export { DragHandle } from "./DragHandle";
-export { Plus, Trash2, GripVertical } from "./icons";
+export { Plus, Trash2, GripVertical, Clock, Grid, User, Key, Bell, ChevronDown, ChevronUp } from "./icons";
 export { default as ScreeningQuestions } from "./ScreeningQuestions";
 export { GreetingMessage } from "./GreetingMessage";
 export type { GreetingMessageProps } from "./GreetingMessage";
@@ -60,4 +60,5 @@ export { EndingMessage } from "./EndingMessage";
 export type { EndingMessageProps, FAQItem } from "./EndingMessage";
 export { Header } from "./Header";
 export type { HeaderProps } from "./Header";
+export { Sidebar } from "./Sidebar";
 

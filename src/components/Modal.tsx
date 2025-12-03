@@ -154,7 +154,7 @@ const ModalTitle = React.forwardRef<
   <h2
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+      "text-lg font-semibold leading-none tracking-tight mb-2 border-b border-gray-200 pb-4",
       className
     )}
     {...props}
