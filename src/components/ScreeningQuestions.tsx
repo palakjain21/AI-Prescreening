@@ -8,6 +8,7 @@ import {
   generateQuestionId,
   generateOptionId,
 } from '../services/screeningDataService';
+import { ThunderboltOutlined } from '@ant-design/icons';
 
 const ScreeningQuestions: React.FC = () => {
   // Initialize with local data first, then fetch from API
@@ -191,7 +192,8 @@ const ScreeningQuestions: React.FC = () => {
       {/* Header */}
       <div className="w-full flex items-center justify-between">
           <div className="fs-[15px] text-gray-900">Prescreening Chat</div>
-          <Button variant="outline" className="fs-[15px] text-gray-900">
+          <Button variant="outline" className="fs-[15px] text-gray-900 flex items-center gap-2">
+            <ThunderboltOutlined />
             Regenerate</Button>
       </div>
 
