@@ -14,7 +14,7 @@ import {
 } from "./index";
 import { Plus, Trash2, ChevronDown, ChevronUp } from "./icons";
 import { OptionRow } from "./OptionRow";
-import { DragHandle } from "./DragHandle";
+import { DragHandle } from "./ui/DragHandle";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import type { Question, QuestionCardProps, AddQuestionButtonProps } from "../types";
 import { generateOptionId } from "../services/screeningDataService";
@@ -163,9 +163,9 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
         variant="question"
         className={cn(
           "relative group transition-all duration-200",
-          isHovered && "shadow-md border-blue-200",
+          isHovered && "shadow-md border-primary/30",
           isDragging && "opacity-50 cursor-grabbing",
-          isBeingHoveredDuringDrag && "border-blue-400 border-2 shadow-lg"
+          isBeingHoveredDuringDrag && "border-primary border-2 shadow-lg"
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -177,7 +177,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8 bg-white shadow-md hover:bg-blue-50 border-blue-200"
+              className="h-8 w-8 bg-card shadow-md hover:bg-primary-muted border-primary/30"
               onClick={() => question.id && onAddQuestion(question.id)}
               title="Add question after this one"
             >
@@ -186,7 +186,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8 bg-white shadow-md hover:bg-red-50 border-red-200 text-red-600 hover:text-red-700"
+              className="h-8 w-8 bg-card shadow-md hover:bg-destructive-muted border-destructive/30 text-destructive hover:text-destructive"
               onClick={() => setShowDeleteModal(true)}
               title="Delete this question"
             >
@@ -220,7 +220,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
 
               {/* Technical Skills badge for free-text questions */}
               {question.type === 'free-text' && (
-                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                <Badge variant="outline" className="bg-warning-muted text-warning border-warning/30">
                   Technical Skills
                 </Badge>
               )}
@@ -229,13 +229,13 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             {/* Chevron Toggle */}
             <button
               onClick={handleToggleOpen}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              className="p-1 hover:bg-muted rounded transition-colors"
               title={isOpen ? "Collapse question" : "Expand question"}
             >
               {isOpen ? (
-                <ChevronUp className="h-5 w-5 text-gray-500" />
+                <ChevronUp className="h-5 w-5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="h-5 w-5 text-gray-500" />
+                <ChevronDown className="h-5 w-5 text-muted-foreground" />
               )}
             </button>
           </div>
@@ -248,12 +248,12 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                 onChange={(e) => setTitleValue(e.target.value)}
                 onBlur={handleTitleSubmit}
                 onKeyDown={handleTitleKeyDown}
-                className="font-medium text-sm bg-white border border-gray-300 rounded-md"
+                className="font-medium text-sm bg-card border border-border rounded-md"
                 autoFocus
               />
             ) : (
               <div
-                className="font-medium text-sm cursor-pointer transition-colors text-left bg-gray-50 px-3 py-2.5 rounded-md hover:bg-gray-100 text-gray-900"
+                className="font-medium text-sm cursor-pointer transition-colors text-left bg-muted px-3 py-2.5 rounded-md hover:bg-muted/80 text-foreground"
                 onClick={() => setIsEditingTitle(true)}
               >
                 {question.title || question.question || "How many years of experience do you hold?"}
@@ -272,8 +272,8 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                     className={cn(
                       "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors",
                       hasZeroScore
-                        ? "bg-red-50 text-red-700 border-red-300"
-                        : "bg-gray-50 text-gray-700 border-gray-200"
+                        ? "bg-destructive-muted text-destructive border-destructive/30"
+                        : "bg-muted text-foreground border-border"
                     )}
                   >
                     <span>{option.text}</span>
@@ -338,7 +338,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                         key={option.id || `option-${index}`}
                         className={cn(
                           "transition-all duration-200",
-                          hasZeroScore && "ring-2 ring-red-300 rounded-md"
+                          hasZeroScore && "ring-2 ring-destructive/30 rounded-md"
                         )}
                       >
                         <OptionRow
@@ -362,7 +362,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                     variant="neutral"
                     size="sm"
                     onClick={handleAddOption}
-                    className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 h-auto"
+                    className="text-primary hover:text-primary-hover font-medium flex items-center gap-2 h-auto"
                   >
                     <Plus className="h-4 w-4" />
                     <span className="text-sm">Add option</span>
@@ -374,10 +374,10 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             {/* Free Text Preview */}
             {question.type === 'free-text' && (
               <div className="space-y-2">
-                <label className="text-xs font-medium text-gray-500 uppercase">Response Area</label>
-                <div className="p-3 border border-gray-200 rounded-md bg-gray-50">
-                  <div className="min-h-[80px] bg-white border border-gray-200 rounded-md p-3">
-                    <span className="text-gray-400 text-sm">Candidate will type their answer here...</span>
+                <label className="text-xs font-medium text-muted-foreground uppercase">Response Area</label>
+                <div className="p-3 border border-border rounded-md bg-muted">
+                  <div className="min-h-[80px] bg-card border border-border rounded-md p-3">
+                    <span className="text-muted-foreground text-sm">Candidate will type their answer here...</span>
                   </div>
                 </div>
               </div>
@@ -410,7 +410,7 @@ const AddQuestionButton = React.forwardRef<HTMLButtonElement, AddQuestionButtonP
       // <Button
       //   ref={ref}
       //   variant="outline"
-      //   className="w-full h-16 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-600 hover:text-blue-600 transition-all duration-200"
+      //   className="w-full h-16 border-2 border-dashed border-border hover:border-primary hover:bg-primary-muted text-muted-foreground hover:text-primary transition-all duration-200"
       //   onClick={onAddQuestion}
       //   {...props}
       // >
@@ -418,13 +418,13 @@ const AddQuestionButton = React.forwardRef<HTMLButtonElement, AddQuestionButtonP
       //   Add Question
       // </Button>
       <div
-      className="border border-dashed border-gray-300 rounded-lg p-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50"
+      className="border border-dashed border-border rounded-lg p-4 flex items-center gap-4 cursor-pointer hover:bg-muted"
       onClick={onAddQuestion}
     >
       {/* Icon Button */}
       <button
         type="button"
-        className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-md text-xl font-medium"
+        className="w-10 h-10 flex items-center justify-center border border-border rounded-md text-xl font-medium"
       >
         +
       </button>
@@ -432,7 +432,7 @@ const AddQuestionButton = React.forwardRef<HTMLButtonElement, AddQuestionButtonP
       {/* Text Block */}
       <div className="flex flex-col justify-center items-start">
         <span className="text-lg font-semibold">Add Question</span>
-        <span className="text-gray-500 text-sm">
+        <span className="text-muted-foreground text-sm">
           Select from a range of single choice, multiple choice & free text
         </span>
       </div>

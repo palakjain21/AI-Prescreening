@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "question" | "greeting" | "ending";
@@ -8,10 +8,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", ...props }, ref) => {
     const variantStyles = {
-      default: "rounded-lg border bg-white text-gray-900 shadow-sm",
-      question: "rounded-lg border border-gray-200 bg-white py-5 px-4 shadow-sm hover:shadow-md transition-shadow",
-      greeting: "rounded-lg border border-gray-200 bg-white p-6 shadow-sm",
-      ending: "rounded-lg border border-gray-200 bg-white p-6 shadow-sm",
+      default: "rounded-lg border border-border bg-card text-card-foreground shadow-sm",
+      question: "rounded-lg border border-border bg-card py-5 px-4 shadow-sm hover:shadow-md transition-shadow",
+      greeting: "rounded-lg border border-border bg-card p-6 shadow-sm",
+      ending: "rounded-lg border border-border bg-card p-6 shadow-sm",
     };
 
     return (

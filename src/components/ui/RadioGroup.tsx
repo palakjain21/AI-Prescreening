@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 interface RadioGroupOption {
   value: string;
@@ -26,8 +26,8 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
           <label
             key={option.value}
             className={cn(
-              "flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 hover:bg-gray-50",
-              value === option.value && "bg-blue-50"
+              "flex items-center gap-2 cursor-pointer rounded-md px-3 py-2 hover:bg-muted",
+              value === option.value && "bg-primary-muted"
             )}
           >
             <input
@@ -36,7 +36,7 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
               value={option.value}
               checked={value === option.value}
               onChange={(e) => onValueChange?.(e.target.value)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 text-primary focus:ring-ring"
             />
             <span className="text-sm">{option.label}</span>
           </label>
@@ -48,4 +48,3 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
 RadioGroup.displayName = "RadioGroup";
 
 export { RadioGroup };
-

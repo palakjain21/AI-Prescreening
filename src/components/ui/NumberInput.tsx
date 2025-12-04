@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 // Custom Icons
 const ChevronUpIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -39,7 +39,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         <input
           type="number"
           className={cn(
-            "flex h-9 w-20 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+            "flex h-9 w-20 rounded-md border border-border bg-card px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             className
           )}
           ref={ref}
@@ -49,7 +49,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           <button
             type="button"
             onClick={onIncrement}
-            className="h-3 w-4 flex items-center justify-center border-b border-gray-300 hover:bg-gray-100 rounded-t"
+            className="h-3 w-4 flex items-center justify-center border-b border-border hover:bg-muted rounded-t"
             tabIndex={-1}
           >
             <ChevronUpIcon className="h-3 w-3" />
@@ -57,7 +57,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           <button
             type="button"
             onClick={onDecrement}
-            className="h-3 w-4 flex items-center justify-center hover:bg-gray-100 rounded-b"
+            className="h-3 w-4 flex items-center justify-center hover:bg-muted rounded-b"
             tabIndex={-1}
           >
             <ChevronDownIcon className="h-3 w-3" />
@@ -70,4 +70,3 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 NumberInput.displayName = "NumberInput";
 
 export { NumberInput };
-

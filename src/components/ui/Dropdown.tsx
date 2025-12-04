@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 // Custom Icons
 const ChevronDownIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -82,25 +82,25 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
           disabled={disabled}
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "flex h-9 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-9 w-full items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm font-medium shadow-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           {...props}
         >
-          <span className={cn(!selectedOption && "text-gray-500")}>
+          <span className={cn(!selectedOption && "text-muted-foreground")}>
             {selectedOption ? selectedOption.label : placeholder}
           </span>
           <ChevronDownIcon className={cn("h-4 w-4 opacity-50 transition-transform", isOpen && "rotate-180")} />
         </button>
         
         {isOpen && (
-          <div className="absolute z-50 mt-1 min-w-[8rem] w-full overflow-hidden rounded-md border border-gray-200 bg-white p-1 shadow-md">
+          <div className="absolute z-50 mt-1 min-w-[8rem] w-full overflow-hidden rounded-md border border-border bg-popover p-1 shadow-md">
             {options.map((option) => (
               <button
                 key={option.value}
                 className={cn(
-                  "relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-gray-100 focus:bg-gray-100",
-                  value === option.value && "bg-gray-100"
+                  "relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm text-popover-foreground outline-none hover:bg-muted focus:bg-muted",
+                  value === option.value && "bg-muted"
                 )}
                 onClick={() => handleSelect(option.value)}
               >
@@ -119,4 +119,3 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
 Dropdown.displayName = "Dropdown";
 
 export { Dropdown };
-

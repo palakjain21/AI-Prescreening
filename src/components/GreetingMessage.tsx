@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Badge } from "./Badge";
-import { Button } from "./Button";
-import { Card } from "./Card";
+import { Badge } from "./ui/Badge";
+import { Button } from "./ui/Button";
+import { Card } from "./ui/Card";
 import { cn } from "../utils";
 
 export interface GreetingMessageProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,12 +21,12 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
       <Card variant="greeting" ref={ref} className={cn(className)} {...props}>
         <div className="space-y-4 text-left">
           {/* Badge */}
-          <Badge variant="qualified" className="bg-green-50 text-green-700">
+          <Badge variant="qualified" className="bg-success-muted text-success">
             Greeting Message
           </Badge>
 
           {/* Message Text */}
-          <p className="text-gray-900 text-base leading-relaxed">
+          <p className="text-foreground text-base leading-relaxed">
             {displayMessage}
           </p>
 
@@ -38,8 +38,8 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
                 variant={index === 0 ? "outline" : "outline"}
                 className={cn(
                   index === 0
-                    ? "border-gray-900 text-gray-900 hover:bg-gray-50"
-                    : "border-gray-300 text-gray-500 hover:bg-gray-50"
+                    ? "border-foreground text-foreground hover:bg-muted"
+                    : "border-border text-muted-foreground hover:bg-muted"
                 )}
                 disabled
               >
@@ -56,4 +56,3 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
 GreetingMessage.displayName = "GreetingMessage";
 
 export { GreetingMessage };
-

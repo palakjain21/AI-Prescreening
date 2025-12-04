@@ -42,19 +42,19 @@ export const OptionRow: React.FC<OptionRowProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-center gap-3 bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-md">
+    <div className="flex items-center justify-center gap-3 bg-muted hover:bg-muted/80 px-3 py-2 rounded-md">
       <div className="flex items-center justify-center">
         {questionType === 'single-choice' ? (
           <input
             type="radio"
-            className="w-4 h-4 text-blue-600 border-gray-400 focus:ring-blue-500 focus:ring-2 cursor-default"
+            className="w-4 h-4 text-primary border-border-muted focus:ring-ring focus:ring-2 cursor-default"
             disabled
             readOnly
           />
         ) : (
           <input
             type="checkbox"
-            className="w-4 h-4 text-blue-600 border-gray-400 rounded focus:ring-blue-500 focus:ring-2 cursor-default"
+            className="w-4 h-4 text-primary border-border-muted rounded focus:ring-ring focus:ring-2 cursor-default"
             disabled
             readOnly
           />
@@ -68,12 +68,12 @@ export const OptionRow: React.FC<OptionRowProps> = ({
             onChange={(e) => setTextValue(e.target.value)}
             onBlur={handleSubmit}
             onKeyDown={handleKeyDown}
-            className="bg-white rounded-md text-sm"
+            className="bg-card rounded-md text-sm"
             autoFocus
           />
         ) : (
           <div
-            className="cursor-pointer transition-colors text-left px-3 py-2 rounded-md text-gray-700 text-sm"
+            className="cursor-pointer transition-colors text-left px-3 py-2 rounded-md text-foreground text-sm"
             onClick={() => setIsEditing(true)}
           >
             {option.text || option.value || `Option ${index + 1}`}
@@ -98,7 +98,7 @@ export const OptionRow: React.FC<OptionRowProps> = ({
           variant="neutral"
           size="icon"
           onClick={onDelete}
-          className="text-gray-600 hover:text-red-600 h-6 w-6 flex-shrink-0"
+          className="text-muted-foreground hover:text-destructive h-6 w-6 flex-shrink-0"
         >
           <span className="sr-only">Delete</span>
           <svg
@@ -116,4 +116,3 @@ export const OptionRow: React.FC<OptionRowProps> = ({
     </div>
   );
 };
-

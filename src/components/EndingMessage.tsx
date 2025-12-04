@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Badge } from "./Badge";
-import { Card } from "./Card";
+import { Badge } from "./ui/Badge";
+import { Card } from "./ui/Card";
 import { cn } from "../utils";
 
 // Check Icon for Qualified tab
@@ -67,54 +67,54 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
       <Card variant="ending" ref={ref} className={cn(className)} {...props}>
         <div className="space-y-6 text-left">
           {/* Badge */}
-          <Badge variant="qualified" className="bg-green-50 text-green-700 !rounded-[6px]">
+          <Badge variant="qualified" className="bg-success-muted text-success !rounded-[6px]">
             Ending Message
           </Badge>
 
           {/* Tabs */}
-          <div className="flex gap-0 border-b border-gray-200">
+          <div className="flex gap-0 border-b border-border">
             <button
               className={cn(
                 "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                 isQualified
-                  ? "text-green-700 border-green-600"
-                  : "text-gray-500 border-transparent"
+                  ? "text-success border-success"
+                  : "text-muted-foreground border-transparent"
               )}
               disabled
             >
-              <CheckIcon className={cn("h-4 w-4", isQualified ? "text-green-700" : "text-gray-500")} />
+              <CheckIcon className={cn("h-4 w-4", isQualified ? "text-success" : "text-muted-foreground")} />
               Qualified
             </button>
             <button
               className={cn(
                 "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                 !isQualified
-                  ? "text-red-700 border-red-600"
-                  : "text-gray-500 border-transparent"
+                  ? "text-destructive border-destructive"
+                  : "text-muted-foreground border-transparent"
               )}
               disabled
             >
-              <XIcon className={cn("h-4 w-4", !isQualified ? "text-red-700" : "text-gray-500")} />
+              <XIcon className={cn("h-4 w-4", !isQualified ? "text-destructive" : "text-muted-foreground")} />
               Disqualified
             </button>
           </div>
 
           {/* Message Text */}
-          <p className="text-gray-900 text-base leading-relaxed text-left">
+          <p className="text-foreground text-base leading-relaxed text-left">
             {displayMessage}
           </p>
 
           {/* FAQ Section */}
           {displayFAQs.length > 0 && (
             <div className="space-y-4 text-left">
-              <h3 className="text-sm font-medium text-gray-500 text-left">FAQ's (Optional)</h3>
+              <h3 className="text-sm font-medium text-muted-foreground text-left">FAQ's (Optional)</h3>
               <div className="space-y-4 text-left">
                 {displayFAQs.map((faq, index) => (
                   <div key={index} className="space-y-1 text-left">
-                    <h4 className="text-sm font-medium text-gray-900">
+                    <h4 className="text-sm font-medium text-foreground">
                       {faq.question}
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       {faq.answer}
                     </p>
                   </div>
@@ -131,4 +131,3 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
 EndingMessage.displayName = "EndingMessage";
 
 export { EndingMessage };
-

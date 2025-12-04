@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Clock, Grid, User, Key, Bell } from "./icons";
-import { Button } from "./Button";
+import { Button } from "./ui/Button";
 
 export const Sidebar: React.FC = () => {
   return (
-    <div className="fixed left-0 top-0 h-full w-[78px] bg-white flex flex-col items-center py-6 border-r border-gray-200">
+    <div className="fixed left-0 top-0 h-full w-[78px] bg-card flex flex-col items-center py-6 border-r border-border">
       {/* Top icon group */}
       <div className="flex flex-col items-center justify-center space-y-4 h-full">
         {/* Clock/Analytics icon */}

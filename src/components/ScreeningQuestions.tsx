@@ -178,8 +178,8 @@ const ScreeningQuestions: React.FC = () => {
       <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading screening questions...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading screening questions...</p>
           </div>
         </div>
       </div>
@@ -190,8 +190,8 @@ const ScreeningQuestions: React.FC = () => {
     <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="w-full flex items-center justify-between">
-          <div className="fs-[15px] text-gray-900">Prescreening Chat</div>
-          <Button variant="outline" className="fs-[15px] text-gray-900">
+          <div className="fs-[15px] text-foreground">Prescreening Chat</div>
+          <Button variant="outline" className="fs-[15px] text-foreground">
             Regenerate</Button>
       </div>
 
@@ -200,7 +200,7 @@ const ScreeningQuestions: React.FC = () => {
         <CardContent className="p-0 border-none">
           {/* <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Welcome Text
               </label>
               <textarea
@@ -212,7 +212,7 @@ const ScreeningQuestions: React.FC = () => {
                     text: e.target.value,
                   },
                 })}
-                className="w-full p-3 border border-gray-300 rounded-lg resize-none"
+                className="w-full p-3 border border-border rounded-lg resize-none"
                 rows={3}
               />
             </div>

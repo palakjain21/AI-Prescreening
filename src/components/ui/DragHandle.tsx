@@ -1,6 +1,6 @@
 import * as React from "react";
-import { GripVertical } from "./icons";
-import { cn } from "../utils";
+import { GripVertical } from "../icons";
+import { cn } from "../../utils";
 
 interface DragHandleProps {
   isDragging: boolean;
@@ -20,8 +20,7 @@ export const DragHandle: React.FC<DragHandleProps> = ({
       )}
       title="Drag to reorder"
     >
-      <GripVertical className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+      <GripVertical className="h-4 w-4 text-muted-foreground hover:text-foreground" />
     </div>
   );
 };
-

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 import { Button } from "./Button";
 
 // Custom X Icon component
@@ -80,7 +80,7 @@ const ModalOverlay = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in-0",
+      "fixed inset-0 z-50 bg-foreground/50 backdrop-blur-sm animate-fade-in",
       className
     )}
     {...props}
@@ -99,7 +99,7 @@ const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
       <div
         ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-gray-200 bg-white p-6 shadow-lg duration-200 animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%] rounded-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-card p-6 shadow-lg duration-200 animate-zoom-in rounded-lg",
           className
         )}
         onClick={(e) => e.stopPropagation()}
@@ -108,7 +108,7 @@ const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
         {children}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none"
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
         >
           <XIcon className="h-4 w-4" />
           <span className="sr-only">Close</span>
@@ -154,7 +154,7 @@ const ModalTitle = React.forwardRef<
   <h2
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight mb-2 border-b border-gray-200 pb-4",
+      "text-lg font-semibold leading-none tracking-tight mb-2 border-b border-border pb-4",
       className
     )}
     {...props}
@@ -168,7 +168,7 @@ const ModalDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-gray-500", className)}
+    className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ));
@@ -235,4 +235,3 @@ export {
   ModalDescription,
   DeleteModal,
 };
-

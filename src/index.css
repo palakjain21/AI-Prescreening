@@ -2,63 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: 'Manrope', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  font-family: 'Manrope', sans-serif;
-}
-
-/* h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
+@layer base {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    /* Font */
+    font-family: 'Manrope', sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+
+    /* Background colors */
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    
+    /* Muted elements */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Cards and elevated surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    /* Popovers/Dropdowns */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    /* Borders */
+    --border: 214.3 31.8% 91.4%;
+    --border-muted: 214.3 31.8% 85%;
+
+    /* Input elements */
+    --input: 214.3 31.8% 91.4%;
+    --input-focus: 221.2 83.2% 53.3%;
+
+    /* Primary brand color (blue) */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-hover: 221.2 83.2% 43%;
+    --primary-foreground: 210 40% 98%;
+    --primary-muted: 221.2 83.2% 96%;
+
+    /* Secondary color (gray) */
+    --secondary: 210 40% 96.1%;
+    --secondary-hover: 210 40% 90%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    /* Accent color */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    /* Destructive/Error (red) */
+    --destructive: 0 72.2% 50.6%;
+    --destructive-hover: 0 72.2% 42%;
+    --destructive-foreground: 210 40% 98%;
+    --destructive-muted: 0 72.2% 96%;
+
+    /* Success (green) */
+    --success: 142 76% 36%;
+    --success-hover: 142 76% 30%;
+    --success-foreground: 210 40% 98%;
+    --success-muted: 142 76% 95%;
+
+    /* Warning (orange) */
+    --warning: 38 92% 50%;
+    --warning-hover: 38 92% 42%;
+    --warning-foreground: 0 0% 100%;
+    --warning-muted: 38 92% 95%;
+
+    /* Purple (for secondary badges like eligibility) */
+    --purple: 271 81% 56%;
+    --purple-foreground: 210 40% 98%;
+    --purple-muted: 271 81% 96%;
+    --purple-text: 271 81% 36%;
+
+    /* Ring (focus states) */
+    --ring: 221.2 83.2% 53.3%;
+
+    /* Radius */
+    --radius: 0.5rem;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
-  a:hover {
-    color: #747bff;
+}
+
+@layer base {
+  * {
+    @apply border-border;
   }
-  button {
-    background-color: #f9f9f9;
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: 'Manrope', sans-serif;
   }
-} */
+
+  a {
+    @apply text-primary font-medium hover:text-primary-hover;
+    text-decoration: inherit;
+  }
+}
