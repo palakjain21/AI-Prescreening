@@ -19,6 +19,8 @@ import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import type { Question, QuestionCardProps, AddQuestionButtonProps } from "../types";
 import { generateOptionId } from "../services/screeningDataService";
 
+type QuestionTypeBadgeVariant = "single-choice" | "multiple-choice" | "free-text";
+
 const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
   ({ 
     question,
@@ -130,7 +132,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       }
     };
 
-    const { ref: dndRef, isDragging, isOver, drag } = useDragAndDrop({
+    const { ref: dndRef, isDragging, isOver } = useDragAndDrop({
       id: question.id || '',
       index,
       onDrop,
@@ -141,14 +143,14 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
 
     const mergedRef = React.useCallback(
       (node: HTMLDivElement | null) => {
-        dndRef.current = node;
+        dndRef(node);
         if (typeof ref === 'function') {
           ref(node);
         } else if (ref) {
           ref.current = node;
         }
       },
-      [ref, dndRef]
+      [dndRef, ref]
     );
 
     const isBeingHoveredDuringDrag = isOver && draggedIndex !== null && draggedIndex !== index;
@@ -191,11 +193,11 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
         )}
 
         <CardHeader className="pb-4 px-2">
-        <DragHandle isDragging={isDragging} dragRef={drag} />
+        <DragHandle isDragging={isDragging} />
 
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Badge variant={question.type as any}>
+              <Badge variant={question.type as QuestionTypeBadgeVariant}>
                 {getQuestionTypeBadgeText(question.type)}
               </Badge>
               

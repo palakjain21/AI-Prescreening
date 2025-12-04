@@ -1,152 +1,63 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { QuestionCard, AddQuestionButton } from './QuestionCard';
 import { Card, CardContent, Button, GreetingMessage, EndingMessage, AIIcon, Toast, Trash } from './index';
-import type { Question, QuestionOption, ScreeningData } from '../types';
+import type { Question, QuestionOption } from '../types';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
-  loadScreeningData,
-  fetchScreeningData,
-  generateQuestionId,
-  generateOptionId,
-} from '../services/screeningDataService';
+  fetchScreeningDataAsync,
+  setHydrated,
+  updateQuestion,
+  addQuestion,
+  deleteQuestion,
+  addOption,
+  deleteOption,
+  updateOption,
+  reorderQuestions,
+} from '../store/screeningSlice';
 
 const ScreeningQuestions: React.FC = () => {
-  // Initialize with local data first, then fetch from API
-  const [screeningData, setScreeningData] = useState<ScreeningData>(() => loadScreeningData());
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
+  const { greetingMsg, questions, isLoading, isHydrated } = useAppSelector(state => state.screening);
+  
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [showToast, setShowToast] = useState<boolean>(false);
 
   useEffect(() => {
-    // Fetch data from API on component mount
-    const initializeData = async () => {
-      setIsLoading(true);
-      try {
-        const apiData = await fetchScreeningData();
-        setScreeningData(apiData);
-        setQuestions(apiData.questions);
-      } catch (error) {
-        console.error('Failed to initialize screening data:', error);
-        // Fallback to local data if API fails
-        const localData = loadScreeningData();
-        setScreeningData(localData);
-        setQuestions(localData.questions);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initializeData();
-  }, []);
-
-  useEffect(() => {
-    // Sync questions with screeningData when it changes
-    // This ensures questions stay in sync, especially on initial load
-    setQuestions(screeningData.questions);
-  }, [screeningData]);
-
-  const updateJsonData = (updatedQuestions: Question[]) => {
-    const updatedScreeningData: ScreeningData = {
-      ...screeningData,
-      questions: updatedQuestions,
-    };
-    setScreeningData(updatedScreeningData);
-  };
-
-  const handleQuestionUpdate = (questionId: string, updates: Partial<Question>) => {
-    const updatedQuestions = questions.map(q =>
-      q.id === questionId ? { ...q, ...updates } : q
-    );
-    setQuestions(updatedQuestions);
-    updateJsonData(updatedQuestions);
-  };
-
-  const handleAddQuestion = (afterQuestionId?: string) => {
-    const questionId = generateQuestionId();
-    const newQuestion: Question = {
-      id: questionId,
-      type: 'single-choice',
-      title: 'Untitled Question',
-      options: [
-        { id: generateOptionId(questionId), text: 'Option 1', score: 0 },
-        { id: generateOptionId(questionId), text: 'Option 2', score: 0 },
-      ],
-      disqualifier: false,
-      enableScoring: false,
-    };
-
-    let updatedQuestions: Question[];
-    if (afterQuestionId) {
-      const insertIndex = questions.findIndex(q => q.id === afterQuestionId) + 1;
-      updatedQuestions = [
-        ...questions.slice(0, insertIndex),
-        newQuestion,
-        ...questions.slice(insertIndex),
-      ];
-    } else {
-      updatedQuestions = [...questions, newQuestion];
+    // Only fetch data if not hydrated (no persisted data) or if questions are empty
+    if (!isHydrated) {
+      dispatch(setHydrated());
     }
+    
+    // Fetch from API only if there's no persisted data
+    if (questions.length === 0) {
+      dispatch(fetchScreeningDataAsync());
+    }
+  }, [dispatch, isHydrated, questions.length]);
 
-    setQuestions(updatedQuestions);
-    updateJsonData(updatedQuestions);
-  };
+  const handleQuestionUpdate = useCallback((questionId: string, updates: Partial<Question>) => {
+    dispatch(updateQuestion({ questionId, updates }));
+  }, [dispatch]);
 
-  const handleDeleteQuestion = (questionId: string) => {
-    const updatedQuestions = questions.filter(q => q.id !== questionId);
-    setQuestions(updatedQuestions);
-    updateJsonData(updatedQuestions);
-    // Show success toast
+  const handleAddQuestion = useCallback((afterQuestionId?: string) => {
+    dispatch(addQuestion({ afterQuestionId }));
+  }, [dispatch]);
+
+  const handleDeleteQuestion = useCallback((questionId: string) => {
+    dispatch(deleteQuestion(questionId));
     setShowToast(true);
-  };
+  }, [dispatch]);
 
-  const handleAddOption = (questionId: string) => {
-    const updatedQuestions = questions.map(q => {
-      if (q.id === questionId) {
-        const newOption: QuestionOption = {
-          id: generateOptionId(questionId),
-          text: `Option ${(q.options?.length || 0) + 1}`,
-          score: 0,
-        };
-        return {
-          ...q,
-          options: [...(q.options || []), newOption],
-        };
-      }
-      return q;
-    });
-    setQuestions(updatedQuestions);
-    updateJsonData(updatedQuestions);
-  };
+  const handleAddOption = useCallback((questionId: string) => {
+    dispatch(addOption(questionId));
+  }, [dispatch]);
 
-  const handleDeleteOption = (questionId: string, optionId: string) => {
-    const updatedQuestions = questions.map(q => {
-      if (q.id === questionId) {
-        return {
-          ...q,
-          options: q.options?.filter(opt => opt.id !== optionId) || [],
-        };
-      }
-      return q;
-    });
-    setQuestions(updatedQuestions);
-    updateJsonData(updatedQuestions);
-  };
+  const handleDeleteOption = useCallback((questionId: string, optionId: string) => {
+    dispatch(deleteOption({ questionId, optionId }));
+  }, [dispatch]);
 
-  const handleUpdateOption = (questionId: string, optionId: string, updates: Partial<QuestionOption>) => {
-    const updatedQuestions = questions.map(q => {
-      if (q.id === questionId) {
-        return {
-          ...q,
-          options: q.options?.map(opt =>
-            opt.id === optionId ? { ...opt, ...updates } : opt
-          ) || [],
-        };
-      }
-      return q;
-    });
-    setQuestions(updatedQuestions);
-    updateJsonData(updatedQuestions);
-  };
+  const handleUpdateOption = useCallback((questionId: string, optionId: string, updates: Partial<QuestionOption>) => {
+    dispatch(updateOption({ questionId, optionId, updates }));
+  }, [dispatch]);
 
   const handleDragStart = useCallback((dragIndex: number) => {
     setDraggedIndex(dragIndex);
@@ -157,26 +68,15 @@ const ScreeningQuestions: React.FC = () => {
   }, []);
 
   const handleDrop = useCallback((dragIndex: number, dropIndex: number) => {
-    const newQuestions = [...questions];
-    const draggedQuestion = newQuestions[dragIndex];
-    
-    // Remove the dragged question from its original position
-    newQuestions.splice(dragIndex, 1);
-    
-    // Insert it at the new position
-    newQuestions.splice(dropIndex, 0, draggedQuestion);
-    
-    setQuestions(newQuestions);
-    updateJsonData(newQuestions);
-  }, [questions]);
+    dispatch(reorderQuestions({ dragIndex, dropIndex }));
+  }, [dispatch]);
 
   const handleHover = useCallback((_hoverIndex: number | null) => {
     // Currently just for visual feedback in individual cards
-    // Can be extended for drop indicators between cards if needed
   }, []);
 
   // Show loading state while fetching data
-  if (isLoading) {
+  if (isLoading && questions.length === 0) {
     return (
       <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
         <div className="flex items-center justify-center min-h-[400px]">
@@ -203,8 +103,8 @@ const ScreeningQuestions: React.FC = () => {
       <Card variant="greeting" className="p-0 border-none"> 
         <CardContent className="p-0 border-none">
           <GreetingMessage
-            message={screeningData.greeting_msg.text}
-            buttonOptions={screeningData.greeting_msg.options}
+            message={greetingMsg.text}
+            buttonOptions={greetingMsg.options}
           />
         </CardContent>
       </Card>

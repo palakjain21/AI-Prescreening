@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier } from "dnd-core";
 
@@ -27,7 +27,7 @@ export const useDragAndDrop = ({
   onDragStart,
   onDragEnd,
 }: UseDragAndDropProps) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
   const [{ handlerId, isOver }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null; isOver: boolean }>({
     accept: QUESTION_CARD_TYPE,
@@ -38,9 +38,6 @@ export const useDragAndDrop = ({
       };
     },
     hover(item: DragItem) {
-      if (!ref.current) {
-        return;
-      }
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -80,15 +77,21 @@ export const useDragAndDrop = ({
     },
   });
 
-  // Connect drag and drop to the same ref
-  drag(drop(ref));
+  // Callback ref - called by React when DOM node is attached/detached
+  // This is the proper pattern for react-dnd with React 19
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      elementRef.current = node;
+      drag(drop(node));
+    },
+    [drag, drop]
+  );
 
   return {
     ref,
+    elementRef, // Expose the actual ref if needed for DOM measurements
     isDragging,
     isOver,
     handlerId,
-    drag,
   };
 };
-
