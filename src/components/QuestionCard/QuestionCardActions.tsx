@@ -1,5 +1,5 @@
-import { Button } from "./Button";
-import { Plus, Trash } from "../assets/icons";
+import { Button } from "../ui/Button";
+import { Plus, Trash } from "../../assets/icons";
 
 interface QuestionCardActionsProps {
   onAdd: () => void;

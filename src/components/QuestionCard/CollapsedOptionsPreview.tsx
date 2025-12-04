@@ -1,5 +1,5 @@
-import { cn } from "../utils";
-import type { QuestionOption } from "../types";
+import { cn } from "../../utils";
+import type { QuestionOption } from "../../types";
 
 interface CollapsedOptionsPreviewProps {
   options: QuestionOption[];

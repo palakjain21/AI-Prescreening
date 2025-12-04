@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Question, QuestionOption, ScreeningData, GreetingMessage } from '../types';
+import type { Question, QuestionOption, GreetingMessage } from '../types';
 import {
   fetchScreeningData,
   generateQuestionId,
@@ -23,7 +23,6 @@ const initialState: ScreeningState = {
   error: null,
 };
 
-// Async thunk for fetching screening data
 export const fetchScreeningDataAsync = createAsyncThunk(
   'screening/fetchData',
   async () => {
@@ -118,13 +117,6 @@ const screeningSlice = createSlice({
         }
       }
     },
-    setAnswer: (state, action: PayloadAction<{ questionId: string; answer: string }>) => {
-      const { questionId, answer } = action.payload;
-      const question = state.questions.find(q => q.id === questionId);
-      if (question) {
-        question.answer = answer;
-      }
-    },
     reorderQuestions: (state, action: PayloadAction<{ dragIndex: number; dropIndex: number }>) => {
       const { dragIndex, dropIndex } = action.payload;
       const [draggedQuestion] = state.questions.splice(dragIndex, 1);
@@ -137,10 +129,15 @@ const screeningSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchScreeningDataAsync.fulfilled, (state, action: PayloadAction<ScreeningData>) => {
+      .addCase(fetchScreeningDataAsync.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.greetingMsg = action.payload.greeting_msg;
-        state.questions = action.payload.questions;
+        if (action.payload) {
+          state.greetingMsg = action.payload.greeting_msg as typeof state.greetingMsg;
+          state.questions = action.payload.questions;
+        } else {
+          state.greetingMsg = { text: '', options: [] };
+          state.questions = [];
+        }
       })
       .addCase(fetchScreeningDataAsync.rejected, (state, action) => {
         state.isLoading = false;
@@ -158,7 +155,6 @@ export const {
   deleteOption,
   updateOption,
   selectOption,
-  setAnswer,
   reorderQuestions,
 } = screeningSlice.actions;
 

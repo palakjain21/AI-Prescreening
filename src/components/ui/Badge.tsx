@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "../utils";
-import { RadioButtonChecked, CheckBox, Draw } from "../assets/icons";
+import { cn } from "../../utils";
+import { RadioButtonChecked, CheckBox, Draw } from "../../assets/icons";
 
 type BadgeVariant = 
   | "default"

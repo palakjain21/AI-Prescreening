@@ -6,7 +6,7 @@ import screeningReducer from './screeningSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['screening'], // Only persist screening state
+  whitelist: ['screening'], 
 };
 
 const rootReducer = combineReducers({
@@ -27,7 +27,6 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-// Types for TypeScript
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

@@ -1,5 +1,5 @@
 import { Clock, Grid, User, Bell, Api } from "../assets/icons";
-import { Button } from "./Button";
+import { Button } from "./ui/Button";
 
 export const Sidebar= () => {
   return (

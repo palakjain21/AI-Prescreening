@@ -1,5 +1,5 @@
-import { Badge } from "./Badge";
-import type { Question } from "../types";
+import { Badge } from "../ui/Badge";
+import type { Question } from "../../types";
 
 type QuestionTypeBadgeVariant = "single-choice" | "multiple-choice" | "free-text";
 

@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 type ButtonVariant = "solid" | "outline" | "link";
 type ButtonColor = "primary" | "informative" | "success" | "secondary" | "destructive";

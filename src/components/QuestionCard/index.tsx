@@ -1,21 +1,22 @@
 import * as React from "react";
 import { useState } from "react";
-import { cn } from "../utils";
-import { Card, CardContent, CardHeader, Button, DeleteModal } from "./index";
-import { ChevronDown, ChevronUp, Plus } from "../assets/icons";
-import { DragHandle } from "./DragHandle";
-import { useDragAndDrop } from "../hooks/useDragAndDrop";
-import { QuestionCardActions } from "./QuestionCardActions";
+import { cn } from "../../utils";
+import { Card, CardContent, CardHeader } from "../ui/Card";
+import { Button } from "../ui/Button";
+import { DeleteModal } from "../ui/Modal";
+import { ChevronDown, ChevronUp, Plus } from "../../assets/icons";
+import { DragHandle } from "../ui/DragHandle";
+import { useDragAndDrop } from "../../hooks/useDragAndDrop";
+import { QuestionCardActions } from "./QuestionCardActions";        
 import { QuestionBadges } from "./QuestionBadges";
 import { QuestionTitle } from "./QuestionTitle";
 import { CollapsedOptionsPreview } from "./CollapsedOptionsPreview";
 import { QuestionControls } from "./QuestionControls";
 import { OptionsEditor } from "./OptionsEditor";
-import { FreeTextEditor } from "./FreeTextEditor";
-import type { Question, QuestionCardProps, AddQuestionButtonProps } from "../types";
-import { generateOptionId } from "../services/screeningDataService";
-import { useAppDispatch } from "../store/hooks";
-import { selectOption, setAnswer } from "../store/screeningSlice";
+import type { Question, QuestionCardProps, AddQuestionButtonProps } from "../../types";
+import { generateOptionId } from "../../services/screeningDataService";
+import { useAppDispatch } from "../../store/hooks";
+import { selectOption } from "../../store/screeningSlice";
 
 const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
   (
@@ -46,12 +47,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
     const handleSelectOption = (optionId: string) => {
       if (question.id) {
         dispatch(selectOption({ questionId: question.id, optionId }));
-      }
-    };
-
-    const handleAnswerChange = (answer: string) => {
-      if (question.id) {
-        dispatch(setAnswer({ questionId: question.id, answer }));
       }
     };
 
@@ -229,13 +224,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                 onDelete={handleDeleteOption}
                 onSelect={handleSelectOption}
                 onAddOption={handleAddOption}
-              />
-            )}
-
-            {question.type === "free-text" && (
-              <FreeTextEditor
-                value={question.answer || ""}
-                onChange={handleAnswerChange}
               />
             )}
           </CardContent>

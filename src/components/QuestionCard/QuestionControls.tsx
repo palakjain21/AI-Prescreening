@@ -1,6 +1,6 @@
-import { Select } from "./Select";
-import { Toggle } from "./Toggle";
-import type { Question } from "../types";
+import { Select } from "../ui/Select";
+import { Toggle } from "../ui/Toggle";
+import type { Question } from "../../types";
 
 interface QuestionControlsProps {
   type: Question["type"];

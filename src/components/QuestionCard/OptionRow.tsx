@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
-import { Input, Button, NumberInput, Badge } from "./index";
-import { Close } from "../assets/icons";
-import type { QuestionOption, Question } from "../types";
-import { cn } from "../utils";
+import { Input, Button, NumberInput, Badge } from "../index";
+import { Close } from "../../assets/icons";
+import type { QuestionOption, Question } from "../../types";
+import { cn } from "../../utils";
 
 interface OptionIndicatorProps {
   type: Question['type'];
@@ -69,7 +69,7 @@ const EditableText: React.FC<EditableTextProps> = ({
         onChange={(e) => onChange(e.target.value)}
         onBlur={onSubmit}
         onKeyDown={handleKeyDown}
-        className="bg-white rounded-md text-sm"
+        className="bg-white rounded-md text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none"
         autoFocus
       />
     );

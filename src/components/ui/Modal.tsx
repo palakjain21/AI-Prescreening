@@ -1,7 +1,7 @@
 import * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 import { Button } from "./Button";
-import { Close } from "../assets/icons";
+import { Close } from "../../assets/icons";
 
 interface ModalProps {
   open?: boolean;

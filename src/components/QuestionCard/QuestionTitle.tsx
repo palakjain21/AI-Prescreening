@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Input } from "./Input";
+import { Input } from "../ui/Input";
 
 interface QuestionTitleProps {
   title: string;

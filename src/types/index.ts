@@ -14,14 +14,13 @@ export interface Question {
   title?: string;
   question?: string;
   options?: QuestionOption[];
-  score?: number; // Disabled for free-text questions
+  score?: number; 
   disqualifier?: boolean;
   enableScoring?: boolean;
-  isOpen?: boolean; // For accordion behavior
-  answer?: string; // For free-text questions
+  isOpen?: boolean; 
+  answer?: string; 
 }
 
-// New types for the screening data structure
 export interface GreetingMessage {
   text: string;
   options: string[];

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { GripVertical } from "../assets/icons";
-import { cn } from "../utils";
+import { GripVertical } from "../../assets/icons";
+import { cn } from "../../utils";
 
 interface DragHandleProps {
   isDragging: boolean;

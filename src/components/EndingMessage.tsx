@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Badge } from "./Badge";
-import { Card } from "./Card";
+import { Badge } from "./ui/Badge";
+import { Card } from "./ui/Card";
 import { cn } from "../utils";
 import { Check, Close } from "../assets/icons";
 

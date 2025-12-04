@@ -1,8 +1,8 @@
-import { cn } from "../utils";
-import { Button } from "./Button";
-import { Plus } from "../assets/icons";
+import { cn } from "../../utils";
+import { Button } from "../ui/Button";
+import { Plus } from "../../assets/icons";
 import { OptionRow } from "./OptionRow";
-import type { Question, QuestionOption } from "../types";
+import type { Question, QuestionOption } from "../../types";
 
 interface OptionsEditorProps {
   options: QuestionOption[];
