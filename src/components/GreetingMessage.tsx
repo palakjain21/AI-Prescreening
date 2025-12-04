@@ -39,9 +39,8 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
                 className={cn(
                   index === 0
                     ? "border-neutral-900 text-neutral-900"
-                    : "border-gray-300 text-gray-500 hover:bg-gray-50"
+                    : "border-neutral-100 text-neutral"
                 )}
-                disabled={index !== 0}
               >
                 {buttonText}
               </Button>

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
-import { Input, Button } from "./index";
+import { Input, Button, NumberInput, Badge } from "./index";
 import type { QuestionOption, Question } from "../types";
+import { cn } from "../utils";
 
 interface OptionRowProps {
   option: QuestionOption;
@@ -26,6 +27,7 @@ export const OptionRow: React.FC<OptionRowProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [textValue, setTextValue] = useState(option.text || option.value || '');
+  const [isNumberInputFocused, setIsNumberInputFocused] = useState(false);
 
   const handleSubmit = () => {
     onUpdateText(textValue);
@@ -42,20 +44,20 @@ export const OptionRow: React.FC<OptionRowProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-center gap-3 bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-md">
+    <div className="flex items-center justify-center gap-3 bg-neutral-200 hover:bg-gray-100 px-3 py-2 rounded-md">
       <div className="flex items-center justify-center">
         {questionType === 'single-choice' ? (
           <input
             type="radio"
-            className="w-4 h-4 text-blue-600 border-gray-400 focus:ring-blue-500 focus:ring-2 cursor-default"
             disabled
+            className="w-4 h-4 text-blue-600 border-gray-400 focus:ring-blue-500 focus:ring-2 cursor-default "
             readOnly
           />
         ) : (
           <input
             type="checkbox"
-            className="w-4 h-4 text-blue-600 border-gray-400 rounded focus:ring-blue-500 focus:ring-2 cursor-default"
             disabled
+            className="w-4 h-4 text-blue-600 border-gray-400 rounded focus:ring-blue-500 focus:ring-2 cursor-default"
             readOnly
           />
         )}
@@ -83,11 +85,25 @@ export const OptionRow: React.FC<OptionRowProps> = ({
       
       {enableScoring && (
         <div className="flex items-center gap-2 flex-shrink-0">
-          <Input
-            type="number"
+          <Badge
+            variant="outline"
+            className={cn(
+              "w-10 h-10 text-sm rounded-full border-0",
+              isNumberInputFocused 
+                ? "bg-primary-100 text-primary-500" 
+                : "bg-neutral-light text-gray-500"
+            )}
+          >
+            {option.score || 0}
+          </Badge>
+          <NumberInput
             value={option.score || 0}
             onChange={(e) => onUpdateScore(Number(e.target.value))}
-            className="w-16 h-9 text-sm text-center"
+            onFocus={() => setIsNumberInputFocused(true)}
+            onBlur={() => setIsNumberInputFocused(false)}
+            className={cn("w-16 h-9 text-sm text-center bg-gray-100",isNumberInputFocused 
+                ? "border-primary-500" 
+                : "")}
             min={0}
           />
         </div>

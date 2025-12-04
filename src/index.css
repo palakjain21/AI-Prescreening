@@ -62,3 +62,20 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+/* Number input spinner controls - always visible with transparent background */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1 !important;
+  background: white !important;
+  -webkit-appearance: inner-spin-button;
+  height: 20px;
+  width: 16px;
+  cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover {
+  background: transparent !important;
+  background-color: white !important;
+}

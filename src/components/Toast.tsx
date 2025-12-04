@@ -52,11 +52,6 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       }
     }, [duration, isVisible, onClose]);
 
-    const handleClose = () => {
-      setIsVisible(false);
-      onClose?.();
-    };
-
     if (!isVisible) return null;
 
     return (

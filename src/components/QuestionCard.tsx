@@ -61,12 +61,10 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
     const handleTypeChange = (newType: Question['type']) => {
       const updates: Partial<Question> = { type: newType };
       
-      // Reset options for free-text questions
       if (newType === 'free-text') {
         updates.options = [];
         updates.score = undefined;
       } else if (!question.options || question.options.length === 0) {
-        // Add default options for choice questions
         updates.options = [
           { id: generateOptionId(question.id!), text: 'Option 1', score: 0 },
           { id: generateOptionId(question.id!), text: 'Option 2', score: 0 },
@@ -141,7 +139,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       onDragEnd,
     });
 
-    // Merge refs (external ref and dnd ref)
     const mergedRef = React.useCallback(
       (node: HTMLDivElement | null) => {
         dndRef.current = node;
@@ -154,7 +151,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       [ref, dndRef]
     );
 
-    // Check if this card is being hovered over during drag
     const isBeingHoveredDuringDrag = isOver && draggedIndex !== null && draggedIndex !== index;
 
     return (
@@ -171,7 +167,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
         onMouseLeave={() => setIsHovered(false)}
         {...props}
       >
-        {/* Hover Actions */}
         {isHovered && (
           <div className="absolute -right-[33px] top-4 flex flex-col gap-0 z-10">
             <Button
@@ -195,13 +190,9 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
           </div>
         )}
 
-        {/* Drag Handle */}
-        {/* <DragHandle isDragging={isDragging} dragRef={drag} /> */}
-
         <CardHeader className="pb-4 px-2">
         <DragHandle isDragging={isDragging} dragRef={drag} />
 
-          {/* Badges and Toggle Row */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Badge variant={question.type as any}>
@@ -220,7 +211,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                 </Badge>
               )}
 
-              {/* Technical Skills badge for free-text questions */}
               {question.type === 'free-text' && (
                 <Badge variant="technical-skills">
                   Technical Skills
@@ -229,7 +219,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             </div>
           </div>
 
-          {/* Question Title */}
           <div className="mb-4 flex items-center justify-between gap-2">
             {isEditingTitle ? (
               <Input
@@ -248,7 +237,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                 {question.title || question.question || "How many years of experience do you hold?"}
               </div>
             )}
-                        {/* Chevron Toggle */}
                         <Button
               variant="link"
               size="sm"
@@ -264,7 +252,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             </Button>
           </div>
 
-          {/* Collapsed View - Options as Pills */}
           {!isOpen && (question.type === 'single-choice' || question.type === 'multiple-choice') && (
             <div className="flex flex-wrap gap-2 mb-4">
               {question.options?.map((option, index) => {
@@ -273,15 +260,16 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                   <div
                     key={option.id || `option-${index}`}
                     className={cn(
-                      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors",
+                      "inline-flex items-center gap-1.5 px-2 rounded-md text-sm border transition-colors",
                       hasZeroScore
-                        ? "bg-red-50 text-red-700 border-red-300"
-                        : "bg-neutral-100 text-gray-700 border-gray-200"
+                        ? "text-red-700 border-red-300"
+                        : "text-neutral border-neutral-100"
                     )}
                   >
-                    <span>{option.text}</span>
+                    <span>{option.text} </span>
+                    <span className="text-gray-100 text-3xl font-regular"> | </span>
                     {question.enableScoring && (
-                      <span className="text-xs font-medium">{option.score}</span>
+                      <span className="text-xs font-medium w-6 h-6 flex items-center justify-center bg-primary-100 text-primary-500 rounded-md">{option.score}</span>
                     )}
                   </div>
                 );
@@ -289,7 +277,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             </div>
           )}
 
-          {/* Controls Row - Only show when expanded */}
           {isOpen && (
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -326,13 +313,10 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
           )}
         </CardHeader>
 
-        {/* Expanded Content */}
         {isOpen && (
           <CardContent className="px-4 space-y-2">
-            {/* Options for Choice Questions */}
             {(question.type === 'single-choice' || question.type === 'multiple-choice') && (
               <div className="space-y-1">
-                {/* Options list */}
                 <div className="space-y-2">
                   {question.options?.map((option, index) => {
                     const hasZeroScore = question.enableScoring && option.score === 0;
@@ -359,7 +343,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                   })}
                 </div>
                 
-                {/* Add option button - moved below all options */}
                 <div className="pt-2">
                   <Button
                     variant="link"
@@ -377,8 +360,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
 
           </CardContent>
         )}
-
-        {/* Delete Confirmation Modal */}
         <DeleteModal
           open={showDeleteModal}
           onOpenChange={setShowDeleteModal}
@@ -396,8 +377,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
     );
   }
 );
-
-QuestionCard.displayName = "QuestionCard";
 
 const AddQuestionButton = React.forwardRef<HTMLButtonElement, AddQuestionButtonProps>(
   ({ onAddQuestion }) => {
@@ -426,7 +405,5 @@ const AddQuestionButton = React.forwardRef<HTMLButtonElement, AddQuestionButtonP
     );
   }
 );
-
-AddQuestionButton.displayName = "AddQuestionButton";
 
 export { QuestionCard, AddQuestionButton };
