@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { QuestionCard, AddQuestionButton } from './QuestionCard';
-import { Card, CardContent, Button, GreetingMessage, EndingMessage } from './index';
+import { Card, CardContent, Button, GreetingMessage, EndingMessage, AIIcon, Toast, Trash } from './index';
 import type { Question, QuestionOption, ScreeningData } from '../types';
 import {
   loadScreeningData,
@@ -8,7 +8,6 @@ import {
   generateQuestionId,
   generateOptionId,
 } from '../services/screeningDataService';
-import { ThunderboltOutlined } from '@ant-design/icons';
 
 const ScreeningQuestions: React.FC = () => {
   // Initialize with local data first, then fetch from API
@@ -16,6 +15,7 @@ const ScreeningQuestions: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   useEffect(() => {
     // Fetch data from API on component mount
@@ -72,7 +72,7 @@ const ScreeningQuestions: React.FC = () => {
         { id: generateOptionId(questionId), text: 'Option 2', score: 0 },
       ],
       disqualifier: false,
-      enableScoring: true,
+      enableScoring: false,
     };
 
     let updatedQuestions: Question[];
@@ -95,6 +95,8 @@ const ScreeningQuestions: React.FC = () => {
     const updatedQuestions = questions.filter(q => q.id !== questionId);
     setQuestions(updatedQuestions);
     updateJsonData(updatedQuestions);
+    // Show success toast
+    setShowToast(true);
   };
 
   const handleAddOption = (questionId: string) => {
@@ -190,40 +192,16 @@ const ScreeningQuestions: React.FC = () => {
   return (
     <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full flex items-center justify-between border-b border-gray-200 pb-2">
           <div className="fs-[15px] text-gray-900">Prescreening Chat</div>
-          <Button variant="outline" className="fs-[15px] text-gray-900 flex items-center gap-2">
-            <ThunderboltOutlined />
+          <Button variant="outline" color='primary' className="fs-[15px] flex items-center gap-2">
+            <AIIcon />
             Regenerate</Button>
       </div>
 
       {/* Greeting Message */}
       <Card variant="greeting" className="p-0 border-none"> 
         <CardContent className="p-0 border-none">
-          {/* <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Welcome Text
-              </label>
-              <textarea
-                value={screeningData.greeting_msg.text}
-                onChange={(e) => setScreeningData({
-                  ...screeningData,
-                  greeting_msg: {
-                    ...screeningData.greeting_msg,
-                    text: e.target.value,
-                  },
-                })}
-                className="w-full p-3 border border-gray-300 rounded-lg resize-none"
-                rows={3}
-              />
-            </div>
-            <div className='flex flex-wrap gap-2'>
-              {screeningData?.greeting_msg?.options?.map((option) => (
-                <Badge key={option} variant='outline'>{option}</Badge>
-              ))}
-            </div>  
-          </div> */}
           <GreetingMessage
             message={screeningData.greeting_msg.text}
             buttonOptions={screeningData.greeting_msg.options}
@@ -255,6 +233,17 @@ const ScreeningQuestions: React.FC = () => {
         <AddQuestionButton onAddQuestion={() => handleAddQuestion()} />
             <EndingMessage />
       </div>
+
+      {/* Success Toast */}
+      <Toast
+        variant="error"
+        open={showToast}
+        onClose={() => setShowToast(false)}
+        duration={2000}
+        icon={<Trash />}
+        title="Question Deleted"
+        description="The question has been removed successfully"
+      />
     </div>
   );
 };

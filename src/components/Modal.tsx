@@ -1,19 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils";
 import { Button } from "./Button";
-
-// Custom X Icon component
-const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
+import { Close } from "../assets/icons";
 
 interface ModalProps {
   open?: boolean;
@@ -59,15 +47,11 @@ const ModalTrigger = React.forwardRef<
 ));
 ModalTrigger.displayName = "ModalTrigger";
 
-const ModalPortal: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <>{children}</>;
-};
-
 const ModalClose = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ children, ...props }, ref) => (
-  <button ref={ref} {...props}>
+  <button ref={ref} {...props} >
     {children}
   </button>
 ));
@@ -79,10 +63,7 @@ const ModalOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in-0",
-      className
-    )}
+    className={cn("fixed inset-0 z-50 bg-gradient-to-tr from-primary-500/60 to-primary-200/40", className)}
     {...props}
   />
 ));
@@ -94,27 +75,29 @@ interface ModalContentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
   ({ className, children, onClose, ...props }, ref) => (
-    <ModalPortal>
+    <>
       <ModalOverlay onClick={onClose} />
       <div
         ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-gray-200 bg-white p-6 shadow-lg duration-200 animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%] rounded-lg",
+          "fixed left-1/2 top-1/2 z-50 w-full max-w-xl -translate-x-1/2 -translate-y-1/2 bg-white p-6 shadow-lg rounded-lg border border-gray-200",
           className
         )}
         onClick={(e) => e.stopPropagation()}
         {...props}
       >
         {children}
-        <button
+        <Button
+          variant="link"
+          color="secondary"
+          size="icon"
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none"
+          className="absolute right-2 top-6 opacity-70 hover:opacity-100 focus:ring-0 focus:ring-offset-0"
         >
-          <XIcon className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </button>
-      </div>
-    </ModalPortal>
+          <Close className="h-8 w-8" />
+          </Button>
+        </div>
+    </>
   )
 );
 ModalContent.displayName = "ModalContent";
@@ -123,13 +106,7 @@ const ModalHeader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
-      className
-    )}
-    {...props}
-  />
+  <div className={cn("mb-4", className)} {...props} />
 );
 ModalHeader.displayName = "ModalHeader";
 
@@ -137,13 +114,7 @@ const ModalFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
-    {...props}
-  />
+  <div className={cn("flex justify-end space-x-2 mt-4", className)} {...props} />
 );
 ModalFooter.displayName = "ModalFooter";
 
@@ -153,10 +124,7 @@ const ModalTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h2
     ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight mb-2 border-b border-gray-200 pb-4",
-      className
-    )}
+    className={cn("text-lg font-semibold mb-2 pb-4 border-b border-gray-200 text-left", className)}
     {...props}
   />
 ));
@@ -168,7 +136,7 @@ const ModalDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-gray-500", className)}
+    className={cn("text-neutral-500 text-left pt-4", className)}
     {...props}
   />
 ));
@@ -178,20 +146,20 @@ interface DeleteModalProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   onConfirm?: () => void;
-  title?: string;
-  description?: string;
-  confirmText?: string;
-  cancelText?: string;
+  title: string;
+  description: string;
+  confirmText: string;
+  cancelText: string;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   open,
   onOpenChange,
   onConfirm,
-  title = "Delete Question",
-  description = "Are you sure you want to delete the question from the Prescreening Chat Flow?",
-  confirmText = "Delete",
-  cancelText = "Cancel",
+  title,
+  description,
+  confirmText,
+  cancelText,
 }) => {
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
@@ -203,12 +171,14 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
         <ModalFooter>
           <Button
             variant="outline"
+            color="secondary"
             onClick={() => onOpenChange?.(false)}
           >
             {cancelText}
           </Button>
           <Button
-            variant="destructive"
+            variant="solid"
+            color="destructive"
             onClick={() => {
               onConfirm?.();
               onOpenChange?.(false);
@@ -224,7 +194,6 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
 
 export {
   Modal,
-  ModalPortal,
   ModalOverlay,
   ModalTrigger,
   ModalClose,

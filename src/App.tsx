@@ -6,13 +6,10 @@ import { Header, ScreeningQuestions, Sidebar } from './components'
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
-      <div>
         <Sidebar />
-          <Header />
+          <Header/>
           <div  className="min-h-screen"><ScreeningQuestions />
           </div>
-          
-      </div>
     </DndProvider>
   );
 }

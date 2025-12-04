@@ -95,7 +95,7 @@ export const OptionRow: React.FC<OptionRowProps> = ({
       
       {canDelete && (
         <Button
-          variant="neutral"
+          variant="link"
           size="icon"
           onClick={onDelete}
           className="text-gray-600 hover:text-red-600 h-6 w-6 flex-shrink-0"

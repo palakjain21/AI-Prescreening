@@ -12,7 +12,7 @@ import {
   Toggle,
   DeleteModal,
 } from "./index";
-import { Plus, Trash2, ChevronDown, ChevronUp } from "./icons";
+import { Plus, Trash, ChevronDown, ChevronUp } from "../assets/icons";
 import { OptionRow } from "./OptionRow";
 import { DragHandle } from "./DragHandle";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
@@ -173,32 +173,34 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       >
         {/* Hover Actions */}
         {isHovered && (
-          <div className="absolute -right-2 top-4 flex flex-col gap-1 z-10">
+          <div className="absolute -right-[33px] top-4 flex flex-col gap-0 z-10">
             <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 bg-white shadow-md hover:bg-blue-50 border-blue-200"
+              variant="link"
+              size="sm"
+              className="h-8 w-8 bg-primary-100 rounded-sm focus:ring-0 focus:ring-offset-0"
               onClick={() => question.id && onAddQuestion(question.id)}
               title="Add question after this one"
             >
               <Plus className="h-4 w-4" />
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 bg-white shadow-md hover:bg-red-50 border-red-200 text-red-600 hover:text-red-700"
+              variant="link"
+              size="sm"
+              className="h-8 w-8 bg-error-100 text-error-500 rounded-sm focus:ring-0 focus:ring-offset-0"
               onClick={() => setShowDeleteModal(true)}
               title="Delete this question"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash className="h-4 w-4" />
             </Button>
           </div>
         )}
 
         {/* Drag Handle */}
-        <DragHandle isDragging={isDragging} dragRef={drag} />
+        {/* <DragHandle isDragging={isDragging} dragRef={drag} /> */}
 
         <CardHeader className="pb-4 px-2">
+        <DragHandle isDragging={isDragging} dragRef={drag} />
+
           {/* Badges and Toggle Row */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -213,23 +215,45 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
               )}
               
               {question.enableScoring && (
-                <Badge variant="secondary">
+                <Badge variant="eligibility">
                   Eligibility
                 </Badge>
               )}
 
               {/* Technical Skills badge for free-text questions */}
               {question.type === 'free-text' && (
-                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                <Badge variant="technical-skills">
                   Technical Skills
                 </Badge>
               )}
             </div>
+          </div>
 
-            {/* Chevron Toggle */}
-            <button
+          {/* Question Title */}
+          <div className="mb-4 flex items-center justify-between gap-2">
+            {isEditingTitle ? (
+              <Input
+                value={titleValue}
+                onChange={(e) => setTitleValue(e.target.value)}
+                onBlur={handleTitleSubmit}
+                onKeyDown={handleTitleKeyDown}
+                className="font-medium text-sm bg-white border border-gray-300 rounded-md "
+                autoFocus
+              />
+            ) : (
+              <div
+                className="font-medium text-sm cursor-pointer transition-colors text-left hover:bg-gray-50 px-3 py-2.5 rounded-md text-gray-900"
+                onClick={() => setIsEditingTitle(true)}
+              >
+                {question.title || question.question || "How many years of experience do you hold?"}
+              </div>
+            )}
+                        {/* Chevron Toggle */}
+                        <Button
+              variant="link"
+              size="sm"
               onClick={handleToggleOpen}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              className="p-1 rounded transition-colors"
               title={isOpen ? "Collapse question" : "Expand question"}
             >
               {isOpen ? (
@@ -237,28 +261,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
               ) : (
                 <ChevronDown className="h-5 w-5 text-gray-500" />
               )}
-            </button>
-          </div>
-
-          {/* Question Title */}
-          <div className="mb-4">
-            {isEditingTitle ? (
-              <Input
-                value={titleValue}
-                onChange={(e) => setTitleValue(e.target.value)}
-                onBlur={handleTitleSubmit}
-                onKeyDown={handleTitleKeyDown}
-                className="font-medium text-sm bg-white border border-gray-300 rounded-md"
-                autoFocus
-              />
-            ) : (
-              <div
-                className="font-medium text-sm cursor-pointer transition-colors text-left bg-gray-50 px-3 py-2.5 rounded-md hover:bg-gray-100 text-gray-900"
-                onClick={() => setIsEditingTitle(true)}
-              >
-                {question.title || question.question || "How many years of experience do you hold?"}
-              </div>
-            )}
+            </Button>
           </div>
 
           {/* Collapsed View - Options as Pills */}
@@ -273,7 +276,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                       "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors",
                       hasZeroScore
                         ? "bg-red-50 text-red-700 border-red-300"
-                        : "bg-gray-50 text-gray-700 border-gray-200"
+                        : "bg-neutral-100 text-gray-700 border-gray-200"
                     )}
                   >
                     <span>{option.text}</span>
@@ -359,10 +362,11 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                 {/* Add option button - moved below all options */}
                 <div className="pt-2">
                   <Button
-                    variant="neutral"
+                    variant="link"
                     size="sm"
                     onClick={handleAddOption}
-                    className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 h-auto"
+                    color="primary"
+                    className="flex items-center gap-2 h-auto"
                   >
                     <Plus className="h-4 w-4" />
                     <span className="text-sm">Add option</span>
@@ -371,17 +375,6 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
               </div>
             )}
 
-            {/* Free Text Preview */}
-            {question.type === 'free-text' && (
-              <div className="space-y-2">
-                <label className="text-xs font-medium text-gray-500 uppercase">Response Area</label>
-                <div className="p-3 border border-gray-200 rounded-md bg-gray-50">
-                  <div className="min-h-[80px] bg-white border border-gray-200 rounded-md p-3">
-                    <span className="text-gray-400 text-sm">Candidate will type their answer here...</span>
-                  </div>
-                </div>
-              </div>
-            )}
           </CardContent>
         )}
 
@@ -396,6 +389,8 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
           }}
           title="Delete Question"
           description="Are you sure you want to delete the question from the Prescreening Chat Flow?"
+          confirmText="Delete"
+          cancelText="Cancel"
         />
       </Card>
     );
@@ -407,29 +402,19 @@ QuestionCard.displayName = "QuestionCard";
 const AddQuestionButton = React.forwardRef<HTMLButtonElement, AddQuestionButtonProps>(
   ({ onAddQuestion }) => {
     return (
-      // <Button
-      //   ref={ref}
-      //   variant="outline"
-      //   className="w-full h-16 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-600 hover:text-blue-600 transition-all duration-200"
-      //   onClick={onAddQuestion}
-      //   {...props}
-      // >
-      //   <Plus className="h-5 w-5 mr-2" />
-      //   Add Question
-      // </Button>
       <div
-      className="border border-dashed border-gray-300 rounded-lg p-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50"
+      className="border border-dashed border-gray-300 rounded-lg p-4 flex items-center gap-4 cursor-pointer"
       onClick={onAddQuestion}
     >
-      {/* Icon Button */}
-      <button
+      <Button
+        variant="link"
+        size="sm"
         type="button"
-        className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-md text-xl font-medium"
+        className="focus:ring-0 focus:ring-offset-0"
       >
-        +
-      </button>
+        <Plus className="h-5 w-5" />
+      </Button>
 
-      {/* Text Block */}
       <div className="flex flex-col justify-center items-start">
         <span className="text-lg font-semibold">Add Question</span>
         <span className="text-gray-500 text-sm">

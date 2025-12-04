@@ -1,4 +1,4 @@
-import type { Question, QuestionOption, ScreeningData, QuestionType } from '../types';
+import type { Question, QuestionOption, ScreeningData } from '../types';
 import screeningDataJson from '../data/screening-data.json';
 
 // API endpoint for fetching screening data
@@ -24,18 +24,18 @@ function normalizeQuestionType(type: string): Question['type'] {
 /**
  * Denormalizes question type from component format to JSON format
  */
-function denormalizeQuestionType(type: Question['type']): string {
-  switch (type) {
-    case 'single-choice':
-      return 'single';
-    case 'multiple-choice':
-      return 'multiple';
-    case 'free-text':
-      return 'free_text';
-    default:
-      return type;
-  }
-}
+// function denormalizeQuestionType(type: Question['type']): string {
+//   switch (type) {
+//     case 'single-choice':
+//       return 'single';
+//     case 'multiple-choice':
+//       return 'multiple';
+//     case 'free-text':
+//       return 'free_text';
+//     default:
+//       return type;
+//   }
+// }
 
 /**
  * Simplified ID masking function for screening data

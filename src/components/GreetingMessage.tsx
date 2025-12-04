@@ -21,7 +21,7 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
       <Card variant="greeting" ref={ref} className={cn(className)} {...props}>
         <div className="space-y-4 text-left">
           {/* Badge */}
-          <Badge variant="qualified" className="bg-green-50 text-green-700">
+          <Badge variant="qualified">
             Greeting Message
           </Badge>
 
@@ -35,13 +35,13 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
             {displayButtons.map((buttonText, index) => (
               <Button
                 key={index}
-                variant={index === 0 ? "outline" : "outline"}
+                variant="outline"
                 className={cn(
                   index === 0
-                    ? "border-gray-900 text-gray-900 hover:bg-gray-50"
+                    ? "border-neutral-900 text-neutral-900"
                     : "border-gray-300 text-gray-500 hover:bg-gray-50"
                 )}
-                disabled
+                disabled={index !== 0}
               >
                 {buttonText}
               </Button>

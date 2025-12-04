@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Button } from "./Button";
-import { LeftOutlined, MoreOutlined, FileTextOutlined, DownOutlined, MenuOutlined } from '@ant-design/icons';
-
+import { Left, ArrowLeft, ChevronDown, FileText, Tune } from "../assets/icons";
 export interface HeaderProps {
   className?: string;
 }
@@ -9,63 +8,57 @@ export interface HeaderProps {
 const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
   ({ className = "" }, ref) => {
     return (
-      <div ref={ref} className={`bg-white border-gray-200 w-full ${className}`}>
-        <div className="px-6">
-          {/* Top Row - Back Navigation */}
-          <div className="flex items-center mb-6 h-[82px] border-b border-gray-200">
+      <div ref={ref} className={`bg-white border-gray-200 m-0 p-0 w-full ${className}`}>
+        <div className="px-0">
+          <div className="flex items-center mb-4 h-[60px] border-b border-gray-200 ">
             <div className="flex items-center space-x-2">
               <div className="flex items-center justify-center w-6 h-6 cursor-pointer">
-                <LeftOutlined className="text-gray-600 text-base" />
+                <ArrowLeft className="text-neutral-500 text-base" />
               </div>
-              <span className="text-gray-600 text-sm font-medium">
+              <span className="text-neutral-500 text-sm font-medium">
                 Sales Executive Workflow / Launch Agent
               </span>
             </div>
           </div>
 
-          {/* Second Row - Section Title + Actions */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3 w-[800px] max-w-[800px] mx-auto px-4">
             <div className="flex items-center space-x-2">
               <div className="flex items-center justify-center w-6 h-6">
-                <LeftOutlined className="text-gray-600 text-base" />
+                <Left className="text-neutral-500 text-base" />
               </div>
-              <h1 className="text-lg font-semibold text-gray-900">
-                Sales Executive Questions
+              <h1 className="text-lg font-semibold text-neutral-900">
+                Sales Executive Questions ...
               </h1>
-              <div className="flex items-center ml-2">
-                <MoreOutlined className="text-gray-400 text-lg" />
-              </div>
             </div>
-            
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" size="default">
+
+            <div className="flex items-center space-x-2 px-1">
+              <Button variant="outline" color="secondary" size="default" className="border-gray-300 text-gray-500">
                 Skip
               </Button>
-              <Button variant="primary" size="default">
+              <Button variant="solid" color="informative" size="default">
                 Approve
               </Button>
             </div>
           </div>
 
-          {/* Third Row - Filter Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <button className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
-                <FileTextOutlined className="mr-2" />
+          <div className="flex items-center justify-between w-[800px] max-w-[800px] mx-auto px-4">
+            <div className="flex items-center px-1 space-x-2">
+              <Button variant="outline" color="secondary" size="default" className="border-gray-300 text-gray-500">
+                <FileText />
                 Attempts
-                <DownOutlined className="ml-1" />
-              </button>
-              
-              <button className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
+                <ChevronDown />
+              </Button>
+
+              <Button variant="outline" color="secondary" size="default" className="border-gray-300 text-gray-500">
                 Languages Supported (5)
-                <DownOutlined className="ml-1" />
-              </button>
+                <ChevronDown />
+              </Button>
             </div>
 
-            <div className="flex items-center">
-              <button className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-gray-100 transition-colors">
-                <MenuOutlined className="text-gray-500" />
-              </button>
+            <div className="flex items-center px-1">
+              <Button variant="link" color="secondary" size="icon">
+                <Tune />
+              </Button>
             </div>
           </div>
         </div>
@@ -73,7 +66,5 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
     );
   }
 );
-
-Header.displayName = "Header";
 
 export { Header };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { GripVertical } from "./icons";
+import { GripVertical } from "../assets/icons";
 import { cn } from "../utils";
 
 interface DragHandleProps {
@@ -15,7 +15,7 @@ export const DragHandle: React.FC<DragHandleProps> = ({
     <div 
       ref={dragRef}
       className={cn(
-        "absolute left-2 top-4 transition-opacity cursor-grab active:cursor-grabbing",
+        "absolute -left-[18px] top-8 transition-opacity cursor-grab active:cursor-grabbing bg-gray-100 rounded-sm",
         isDragging ? "opacity-100" : "opacity-0 group-hover:opacity-100"
       )}
       title="Drag to reorder"
