@@ -67,16 +67,16 @@ This project implements a comprehensive screening questions builder with full CR
 
 ### Design Considerations
 
-While implementing the UI, several design decisions were made based on the provided Figma design:
+While implementing the UI, I followed the provided Figma design closely. In a few cases where the design had little inconsistency (e.g., duplicated color names or unspecified interaction states), I have made theme-aligned decisions to ensure a smooth UX.
 
 1. **Color Tokens**
-   - Colors have been matched as closely as possible to the design(Some color tokens in Figma had duplicate names with different hex values)
+   - Colors have been matched as closely as possible to the design(Some tokens had overlapping names, so I consolidated them into a more consistent set for this implementation.)
 
 2. **Component States**
-   - Consistent styles aligned with the given theme have been applied( for states like- Hover, active, and focus, which were not fully specified in the design)
+   - Hover, active, and focus states were inferred where not explicitly defined. I ensured they aligned with the overall visual style of the design.
 
 3. **Tailwind Configuration**
-   - Due to time constraints, a full Tailwind config with all custom tokens (fonts, spacing, radius) was not created but the current structure supports easy extension for future customization
+   - Given the time constraints, I created only the essential Tailwind configuration needed for this assignment. The current setup is structured to allow easy extension for future customization (fonts, spacing scale, radius tokens, etc.).
 
 ### Known Limitations
 
