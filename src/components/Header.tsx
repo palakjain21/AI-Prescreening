@@ -12,16 +12,16 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         <div className="px-0">
           <div className="flex items-center mb-4 h-[60px] border-b border-gray-200 ">
             <div className="flex items-center space-x-2">
-              <div className="flex items-center justify-center w-6 h-6 cursor-pointer">
-                <ArrowLeft className="text-neutral-500 text-base" />
+              <div className="flex items-center justify-center w-6 h-6 cursor-pointer ml-3">
+                <ArrowLeft className="text-neutral-900 text-base" />
               </div>
-              <span className="text-neutral-500 text-sm font-medium">
+              <span className="text-neutral-900 text-sm font-medium">
                 Sales Executive Workflow / Launch Agent
               </span>
             </div>
           </div>
 
-          <div className="flex items-center justify-between mb-3 w-[800px] max-w-[800px] mx-auto px-4">
+          <div className="flex items-center justify-between mb-3 w-[70%] max-w-[70%] mx-auto px-4">
             <div className="flex items-center space-x-2">
               <div className="flex items-center justify-center w-6 h-6">
                 <Left className="text-neutral-500 text-base" />
@@ -41,7 +41,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
             </div>
           </div>
 
-          <div className="flex items-center justify-between w-[800px] max-w-[800px] mx-auto px-4">
+          <div className="flex items-center justify-between w-[70%]] max-w-[70%] mx-auto px-4">
             <div className="flex items-center px-1 space-x-2">
               <Button variant="outline" color="secondary" size="default" className="border-gray-300 text-gray-500">
                 <FileText />

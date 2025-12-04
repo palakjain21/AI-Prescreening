@@ -34,7 +34,7 @@ export function maskScreeningData(rawData: typeof screeningDataJson): ScreeningD
       question: q.question,
       options: maskedOptions,
       disqualifier: q.disqualifier || false,
-      enableScoring: true,
+      enableScoring: q.options?.length > 0 && q.options.every(opt => opt.score !== undefined) || false,
     };
   });
 

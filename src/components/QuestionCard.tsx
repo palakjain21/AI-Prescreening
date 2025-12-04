@@ -197,7 +197,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
         <CardHeader className="pb-4 px-2">
         <DragHandle isDragging={isDragging} />
 
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 w-full">
             <div className="flex items-center gap-2">
               <Badge variant={question.type as QuestionTypeBadgeVariant}>
                 {getQuestionTypeBadgeText(question.type)}
@@ -223,19 +223,19 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
             </div>
           </div>
 
-          <div className="mb-4 flex items-center justify-between gap-2">
+          <div className="mb-4 flex items-center justify-between gap-2 w-full">
             {isEditingTitle ? (
               <Input
                 value={titleValue}
                 onChange={(e) => setTitleValue(e.target.value)}
                 onBlur={handleTitleSubmit}
                 onKeyDown={handleTitleKeyDown}
-                className="font-medium text-sm bg-white border border-gray-300 rounded-md "
+                className="font-medium text-sm bg-white border border-gray-300 rounded-md focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none mb-2"
                 autoFocus
               />
             ) : (
               <div
-                className="font-medium text-sm cursor-pointer transition-colors text-left hover:bg-gray-50 px-3 py-2.5 rounded-md text-gray-900"
+                className="font-medium text-sm cursor-pointer transition-colors text-left hover:bg-gray-50 px-3 py-2.5 rounded-md text-gray-900 w-full mb-2"
                 onClick={() => setIsEditingTitle(true)}
               >
                 {question.title || question.question || "How many years of experience do you hold?"}
@@ -245,7 +245,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
               variant="link"
               size="sm"
               onClick={handleToggleOpen}
-              className="p-1 rounded transition-colors"
+              className="p-1 rounded transition-colors mb-2"
               title={isOpen ? "Collapse question" : "Expand question"}
             >
               {isOpen ? (
@@ -310,6 +310,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
                   <Toggle
                     checked={question.enableScoring || false}
                     onCheckedChange={handleEnableScoringChange}
+                    disabled={question.type === 'free-text'}
                   />
                 </div>
               </div>

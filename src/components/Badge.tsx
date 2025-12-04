@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../utils";
+import { RadioButtonChecked, CheckBox, Draw } from "../assets/icons";
 
 type BadgeVariant = 
   | "default"
@@ -37,14 +38,30 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: BadgeVariant;
 }
 
-function Badge({ className, variant = "default", ...props }: BadgeProps) {
-  const baseClasses = "inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors m-0";
+function Badge({ className, variant = "default", children, ...props }: BadgeProps) {
+  const baseClasses = "inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors m-0 gap-1.5";
+  
+  const renderIcon = () => {
+    switch (variant) {
+      case "single-choice":
+        return <RadioButtonChecked className="w-3 h-3" />;
+      case "multiple-choice":
+        return <CheckBox className="w-3 h-3" />;
+      case "free-text":
+        return <Draw className="w-3 h-3" />;
+      default:
+        return null;
+    }
+  };
   
   return (
     <div 
       className={cn(baseClasses, getVariantClasses(variant), className)} 
       {...props} 
-    />
+    >
+      {renderIcon()}
+      {children}
+    </div>
   );
 }
 

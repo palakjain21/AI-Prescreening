@@ -71,7 +71,7 @@ const ScreeningQuestions: React.FC = () => {
 
   if (isLoading && questions.length === 0) {
     return (
-      <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
+      <div className="w-[70%] max-w-[70%] mx-auto p-6 space-y-6">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -83,7 +83,7 @@ const ScreeningQuestions: React.FC = () => {
   }
 
   return (
-    <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
+    <div className="w-[70%] max-w-[70%] mx-auto p-6 space-y-6">
       <div className="w-full flex items-center justify-between border-b border-gray-200 pb-2">
           <div className="fs-[15px] text-gray-900">Prescreening Chat</div>
           <Button variant="outline" color='primary' className="fs-[15px] flex items-center gap-2">
