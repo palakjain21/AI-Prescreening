@@ -11,70 +11,70 @@
     letter-spacing: 0.5px;
 
     /* Background colors */
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --background: #ffffff;
+    --foreground: #0f172a;
     
     /* Muted elements */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
 
     /* Cards and elevated surfaces */
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
 
     /* Popovers/Dropdowns */
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
 
     /* Borders */
-    --border: 214.3 31.8% 91.4%;
-    --border-muted: 214.3 31.8% 85%;
+    --border: #e2e8f0;
+    --border-muted: #cbd5e1;
 
     /* Input elements */
-    --input: 214.3 31.8% 91.4%;
-    --input-focus: 221.2 83.2% 53.3%;
+    --input: #e2e8f0;
+    --input-focus: #3b82f6;
 
     /* Primary brand color (blue) */
-    --primary: 221.2 83.2% 53.3%;
-    --primary-hover: 221.2 83.2% 43%;
-    --primary-foreground: 210 40% 98%;
-    --primary-muted: 221.2 83.2% 96%;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-foreground: #f8fafc;
+    --primary-muted: #eff6ff;
 
     /* Secondary color (gray) */
-    --secondary: 210 40% 96.1%;
-    --secondary-hover: 210 40% 90%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: #f1f5f9;
+    --secondary-hover: #e2e8f0;
+    --secondary-foreground: #0f172a;
 
     /* Accent color */
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: #f1f5f9;
+    --accent-foreground: #0f172a;
 
     /* Destructive/Error (red) */
-    --destructive: 0 72.2% 50.6%;
-    --destructive-hover: 0 72.2% 42%;
-    --destructive-foreground: 210 40% 98%;
-    --destructive-muted: 0 72.2% 96%;
+    --destructive: #dc2626;
+    --destructive-hover: #b91c1c;
+    --destructive-foreground: #f8fafc;
+    --destructive-muted: #fef2f2;
 
     /* Success (green) */
-    --success: 142 76% 36%;
-    --success-hover: 142 76% 30%;
-    --success-foreground: 210 40% 98%;
-    --success-muted: 142 76% 95%;
+    --success: #16a34a;
+    --success-hover: #15803d;
+    --success-foreground: #f8fafc;
+    --success-muted: #f0fdf4;
 
     /* Warning (orange) */
-    --warning: 38 92% 50%;
-    --warning-hover: 38 92% 42%;
-    --warning-foreground: 0 0% 100%;
-    --warning-muted: 38 92% 95%;
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-foreground: #ffffff;
+    --warning-muted: #fffbeb;
 
     /* Purple (for secondary badges like eligibility) */
-    --purple: 271 81% 56%;
-    --purple-foreground: 210 40% 98%;
-    --purple-muted: 271 81% 96%;
-    --purple-text: 271 81% 36%;
+    --purple: #8b5cf6;
+    --purple-foreground: #f8fafc;
+    --purple-muted: #f5f3ff;
+    --purple-text: #6d28d9;
 
     /* Ring (focus states) */
-    --ring: 221.2 83.2% 53.3%;
+    --ring: #3b82f6;
 
     /* Radius */
     --radius: 0.5rem;
