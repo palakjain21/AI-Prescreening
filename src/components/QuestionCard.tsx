@@ -19,6 +19,8 @@ import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import type { Question, QuestionCardProps, AddQuestionButtonProps } from "../types";
 import { generateOptionId } from "../services/screeningDataService";
 
+type QuestionTypeBadgeVariant = "single-choice" | "multiple-choice" | "free-text";
+
 const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
   ({ 
     question,
@@ -132,7 +134,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       }
     };
 
-    const { ref: dndRef, isDragging, isOver, drag } = useDragAndDrop({
+    const { ref: dndRef, isDragging, isOver } = useDragAndDrop({
       id: question.id || '',
       index,
       onDrop,
@@ -141,17 +143,17 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
       onDragEnd,
     });
 
-    // Merge refs (external ref and dnd ref)
+    // Merge callback ref with forwarded ref
     const mergedRef = React.useCallback(
       (node: HTMLDivElement | null) => {
-        dndRef.current = node;
+        dndRef(node);
         if (typeof ref === 'function') {
           ref(node);
         } else if (ref) {
           ref.current = node;
         }
       },
-      [ref, dndRef]
+      [dndRef, ref]
     );
 
     // Check if this card is being hovered over during drag
@@ -199,12 +201,12 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
         {/* <DragHandle isDragging={isDragging} dragRef={drag} /> */}
 
         <CardHeader className="pb-4 px-2">
-        <DragHandle isDragging={isDragging} dragRef={drag} />
+        <DragHandle isDragging={isDragging} />
 
           {/* Badges and Toggle Row */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Badge variant={question.type as any}>
+              <Badge variant={question.type as QuestionTypeBadgeVariant}>
                 {getQuestionTypeBadgeText(question.type)}
               </Badge>
               
