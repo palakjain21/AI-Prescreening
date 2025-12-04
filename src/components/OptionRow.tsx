@@ -7,16 +7,32 @@ import { cn } from "../utils";
 
 interface OptionIndicatorProps {
   type: Question['type'];
+  selected?: boolean;
+  onSelect: () => void;
 }
 
-const OptionIndicator: React.FC<OptionIndicatorProps> = ({ type }) => {
-  const baseClasses = "w-4 h-4 text-blue-600 border-gray-400 focus:ring-blue-500 focus:ring-2 cursor-default";
+const OptionIndicator: React.FC<OptionIndicatorProps> = ({ type, selected, onSelect }) => {
+  const baseClasses = "w-4 h-4 text-blue-600 border-gray-400 focus:ring-blue-500 focus:ring-2 cursor-pointer";
   
   if (type === 'single-choice') {
-    return <input type="radio" className={baseClasses}  />;
+    return (
+      <input 
+        type="radio" 
+        className={baseClasses} 
+        checked={selected || false}
+        onChange={onSelect}
+      />
+    );
   }
   
-  return <input type="checkbox" className={cn(baseClasses, "rounded")}  />;
+  return (
+    <input 
+      type="checkbox" 
+      className={cn(baseClasses, "rounded")} 
+      checked={selected || false}
+      onChange={onSelect}
+    />
+  );
 };
 
 interface EditableTextProps {
@@ -134,6 +150,7 @@ interface OptionRowProps {
   onUpdateText: (text: string) => void;
   onUpdateScore: (score: number) => void;
   onDelete: () => void;
+  onSelect: () => void;
   canDelete: boolean;
 }
 
@@ -145,6 +162,7 @@ export const OptionRow: React.FC<OptionRowProps> = ({
   onUpdateText,
   onUpdateScore,
   onDelete,
+  onSelect,
   canDelete
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -167,7 +185,7 @@ export const OptionRow: React.FC<OptionRowProps> = ({
   return (
     <div className="flex items-center justify-center gap-3 bg-neutral-50 hover:bg-gray-100 px-3 py-2 rounded-md">
       <div className="flex items-center justify-center">
-        <OptionIndicator type={questionType} />
+        <OptionIndicator type={questionType} selected={option.selected} onSelect={onSelect} />
       </div>
       
       <div className="flex-1">

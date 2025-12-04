@@ -5,6 +5,7 @@ export interface QuestionOption {
   text?: string;
   value?: string;
   score?: number;
+  selected?: boolean;
 }
 
 export interface Question {
@@ -17,6 +18,7 @@ export interface Question {
   disqualifier?: boolean;
   enableScoring?: boolean;
   isOpen?: boolean; // For accordion behavior
+  answer?: string; // For free-text questions
 }
 
 // New types for the screening data structure

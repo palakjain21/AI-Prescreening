@@ -100,6 +100,31 @@ const screeningSlice = createSlice({
         }
       }
     },
+    selectOption: (state, action: PayloadAction<{ questionId: string; optionId: string }>) => {
+      const { questionId, optionId } = action.payload;
+      const question = state.questions.find(q => q.id === questionId);
+      if (question && question.options) {
+        if (question.type === 'single-choice') {
+          // Single choice: deselect all, then select the clicked one
+          question.options.forEach(opt => {
+            opt.selected = opt.id === optionId;
+          });
+        } else if (question.type === 'multiple-choice') {
+          // Multiple choice: toggle the clicked option
+          const option = question.options.find(opt => opt.id === optionId);
+          if (option) {
+            option.selected = !option.selected;
+          }
+        }
+      }
+    },
+    setAnswer: (state, action: PayloadAction<{ questionId: string; answer: string }>) => {
+      const { questionId, answer } = action.payload;
+      const question = state.questions.find(q => q.id === questionId);
+      if (question) {
+        question.answer = answer;
+      }
+    },
     reorderQuestions: (state, action: PayloadAction<{ dragIndex: number; dropIndex: number }>) => {
       const { dragIndex, dropIndex } = action.payload;
       const [draggedQuestion] = state.questions.splice(dragIndex, 1);
@@ -132,6 +157,8 @@ export const {
   addOption,
   deleteOption,
   updateOption,
+  selectOption,
+  setAnswer,
   reorderQuestions,
 } = screeningSlice.actions;
 
