@@ -23,12 +23,10 @@ const ScreeningQuestions: React.FC = () => {
   const [showToast, setShowToast] = useState<boolean>(false);
 
   useEffect(() => {
-    // Only fetch data if not hydrated (no persisted data) or if questions are empty
     if (!isHydrated) {
       dispatch(setHydrated());
     }
     
-    // Fetch from API only if there's no persisted data
     if (questions.length === 0) {
       dispatch(fetchScreeningDataAsync());
     }
@@ -71,7 +69,6 @@ const ScreeningQuestions: React.FC = () => {
     dispatch(reorderQuestions({ dragIndex, dropIndex }));
   }, [dispatch]);
 
-  // Show loading state while fetching data
   if (isLoading && questions.length === 0) {
     return (
       <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
@@ -87,7 +84,6 @@ const ScreeningQuestions: React.FC = () => {
 
   return (
     <div className="w-[800px] max-w-[800px] mx-auto p-6 space-y-6">
-      {/* Header */}
       <div className="w-full flex items-center justify-between border-b border-gray-200 pb-2">
           <div className="fs-[15px] text-gray-900">Prescreening Chat</div>
           <Button variant="outline" color='primary' className="fs-[15px] flex items-center gap-2">
@@ -95,7 +91,6 @@ const ScreeningQuestions: React.FC = () => {
             Regenerate</Button>
       </div>
 
-      {/* Greeting Message */}
       <Card variant="greeting" className="p-0 border-none"> 
         <CardContent className="p-0 border-none">
           <GreetingMessage
@@ -130,7 +125,6 @@ const ScreeningQuestions: React.FC = () => {
             <EndingMessage />
       </div>
 
-      {/* Success Toast */}
       <Toast
         variant="error"
         open={showToast}

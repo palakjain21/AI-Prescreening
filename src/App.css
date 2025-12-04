@@ -4,8 +4,8 @@
   text-align: center;
 }
 body {
-  max-width: 1280px;
-  margin: 0px auto;
+  max-width: 100%;
+  margin: 0;
   padding: 0;
 }
 

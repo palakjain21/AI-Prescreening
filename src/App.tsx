@@ -6,10 +6,15 @@ import { Header, ScreeningQuestions, Sidebar } from './components'
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
+      <div className="flex">
         <Sidebar />
-          <Header/>
-          <div  className="min-h-screen"><ScreeningQuestions />
+        <div className="flex-1 ml-[78px]">
+          <Header />
+          <div className="min-h-screen">
+            <ScreeningQuestions />
           </div>
+        </div>
+      </div>
     </DndProvider>
   );
 }

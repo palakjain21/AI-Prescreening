@@ -8,7 +8,7 @@ export interface NumberInputProps
 }
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
-  ({ className, onIncrement, onDecrement, ...props }, ref) => {
+  ({ className,  ...props }, ref) => {
     return (
       <div className="relative inline-flex items-center">
         <input

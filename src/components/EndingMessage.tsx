@@ -41,7 +41,7 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
     return (
       <Card variant="ending" ref={ref} className={cn(className)} {...props}>
         <div className="space-y-6 text-left">
-          <Badge variant="qualified" className="bg-green-50 text-green-700 !rounded-[6px]">
+          <Badge variant="qualified">
             Ending Message
           </Badge>
 

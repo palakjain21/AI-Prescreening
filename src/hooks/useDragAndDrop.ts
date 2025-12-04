@@ -41,20 +41,16 @@ export const useDragAndDrop = ({
       const dragIndex = item.index;
       const hoverIndex = index;
 
-      // Don't do anything if hovering over itself
       if (dragIndex === hoverIndex) {
         onHover?.(null);
         return;
       }
-
-      // Just notify about hover for visual feedback
       onHover?.(hoverIndex);
     },
     drop(item: DragItem) {
       const dragIndex = item.index;
       const dropIndex = index;
 
-      // Only perform the move on drop
       if (dragIndex !== dropIndex) {
         onDrop(dragIndex, dropIndex);
       }
@@ -71,14 +67,11 @@ export const useDragAndDrop = ({
       isDragging: monitor.isDragging(),
     }),
     end: () => {
-      // Clear states when drag ends
       onHover?.(null);
       onDragEnd?.();
     },
   });
 
-  // Callback ref - called by React when DOM node is attached/detached
-  // This is the proper pattern for react-dnd with React 19
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
       elementRef.current = node;
@@ -89,7 +82,7 @@ export const useDragAndDrop = ({
 
   return {
     ref,
-    elementRef, // Expose the actual ref if needed for DOM measurements
+    elementRef, 
     isDragging,
     isOver,
     handlerId,
