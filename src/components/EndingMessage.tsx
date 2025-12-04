@@ -2,32 +2,7 @@ import * as React from "react";
 import { Badge } from "./Badge";
 import { Card } from "./Card";
 import { cn } from "../utils";
-
-// Check Icon for Qualified tab
-const CheckIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-  </svg>
-);
-
-// X Icon for Disqualified tab
-const XIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
+import { Check, Close } from "../assets/icons";
 
 export interface FAQItem {
   question: string;
@@ -43,7 +18,7 @@ export interface EndingMessageProps extends React.HTMLAttributes<HTMLDivElement>
 const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
   ({ className, message, faqs, selectedTab = "qualified", ...props }, ref) => {
     const defaultMessage = "Thank you for your interest in an exciting career opportunity at Senseloaf. Let's spend the next few minutes getting to know one another to see if there's a current potential fit. Ready to get started?";
-    
+
     const defaultFAQs: FAQItem[] = [
       {
         question: "What happens next?",
@@ -66,12 +41,10 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
     return (
       <Card variant="ending" ref={ref} className={cn(className)} {...props}>
         <div className="space-y-6 text-left">
-          {/* Badge */}
           <Badge variant="qualified" className="bg-green-50 text-green-700 !rounded-[6px]">
             Ending Message
           </Badge>
 
-          {/* Tabs */}
           <div className="flex gap-0 border-b border-gray-200">
             <button
               className={cn(
@@ -82,7 +55,7 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
               )}
               disabled
             >
-              <CheckIcon className={cn("h-4 w-4", isQualified ? "text-green-700" : "text-gray-500")} />
+              <Check className={cn("h-4 w-4", isQualified ? "text-green-700" : "text-gray-500")} />
               Qualified
             </button>
             <button
@@ -94,17 +67,15 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
               )}
               disabled
             >
-              <XIcon className={cn("h-4 w-4", !isQualified ? "text-red-700" : "text-gray-500")} />
+              <Close className={cn("h-4 w-4", !isQualified ? "text-red-700" : "text-gray-500")} />
               Disqualified
             </button>
           </div>
 
-          {/* Message Text */}
           <p className="text-gray-900 text-base leading-relaxed text-left">
             {displayMessage}
           </p>
 
-          {/* FAQ Section */}
           {displayFAQs.length > 0 && (
             <div className="space-y-4 text-left">
               <h3 className="text-sm font-medium text-gray-500 text-left">FAQ's (Optional)</h3>
@@ -127,8 +98,5 @@ const EndingMessage = React.forwardRef<HTMLDivElement, EndingMessageProps>(
     );
   }
 );
-
-EndingMessage.displayName = "EndingMessage";
-
 export { EndingMessage };
 

@@ -45,7 +45,6 @@ const ModalTrigger = React.forwardRef<
     {children}
   </button>
 ));
-ModalTrigger.displayName = "ModalTrigger";
 
 const ModalClose = React.forwardRef<
   HTMLButtonElement,
@@ -55,7 +54,6 @@ const ModalClose = React.forwardRef<
     {children}
   </button>
 ));
-ModalClose.displayName = "ModalClose";
 
 const ModalOverlay = React.forwardRef<
   HTMLDivElement,
@@ -67,7 +65,6 @@ const ModalOverlay = React.forwardRef<
     {...props}
   />
 ));
-ModalOverlay.displayName = "ModalOverlay";
 
 interface ModalContentProps extends React.HTMLAttributes<HTMLDivElement> {
   onClose?: () => void;
@@ -100,7 +97,6 @@ const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
     </>
   )
 );
-ModalContent.displayName = "ModalContent";
 
 const ModalHeader = ({
   className,
@@ -108,7 +104,6 @@ const ModalHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("mb-4", className)} {...props} />
 );
-ModalHeader.displayName = "ModalHeader";
 
 const ModalFooter = ({
   className,
@@ -140,7 +135,6 @@ const ModalDescription = React.forwardRef<
     {...props}
   />
 ));
-ModalDescription.displayName = "ModalDescription";
 
 interface DeleteModalProps {
   open?: boolean;

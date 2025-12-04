@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Input, Button, NumberInput, Badge } from "./index";
 import type { QuestionOption, Question } from "../types";
 import { cn } from "../utils";
+import { Close } from "../assets/icons";
 
 interface OptionRowProps {
   option: QuestionOption;
@@ -108,7 +109,6 @@ export const OptionRow: React.FC<OptionRowProps> = ({
           />
         </div>
       )}
-      
       {canDelete && (
         <Button
           variant="link"
@@ -116,17 +116,7 @@ export const OptionRow: React.FC<OptionRowProps> = ({
           onClick={onDelete}
           className="text-gray-600 hover:text-red-600 h-6 w-6 flex-shrink-0"
         >
-          <span className="sr-only">Delete</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <Close className="h-4 w-4" />
         </Button>
       )}
     </div>

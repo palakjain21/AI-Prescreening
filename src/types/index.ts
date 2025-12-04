@@ -33,6 +33,7 @@ export interface ScreeningData {
 export interface QuestionCardProps {
   question: Question;
   index: number;
+  totalQuestions: number;
   onQuestionUpdate: (questionId: string, updates: Partial<Question>) => void;
   onAddQuestion: (afterQuestionId: string) => void;
   onDeleteQuestion: (questionId: string) => void;

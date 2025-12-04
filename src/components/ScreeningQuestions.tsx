@@ -71,10 +71,6 @@ const ScreeningQuestions: React.FC = () => {
     dispatch(reorderQuestions({ dragIndex, dropIndex }));
   }, [dispatch]);
 
-  const handleHover = useCallback((_hoverIndex: number | null) => {
-    // Currently just for visual feedback in individual cards
-  }, []);
-
   // Show loading state while fetching data
   if (isLoading && questions.length === 0) {
     return (
@@ -116,6 +112,7 @@ const ScreeningQuestions: React.FC = () => {
             key={question.id}
             question={question}
             index={index}
+            totalQuestions={questions.length}
             onQuestionUpdate={handleQuestionUpdate}
             onAddQuestion={handleAddQuestion}
             onDeleteQuestion={handleDeleteQuestion}
@@ -123,7 +120,6 @@ const ScreeningQuestions: React.FC = () => {
             onDeleteOption={handleDeleteOption}
             onUpdateOption={handleUpdateOption}
             onDrop={handleDrop}
-            onHover={handleHover}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             draggedIndex={draggedIndex}

@@ -20,17 +20,14 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
     return (
       <Card variant="greeting" ref={ref} className={cn(className)} {...props}>
         <div className="space-y-4 text-left">
-          {/* Badge */}
           <Badge variant="qualified">
             Greeting Message
           </Badge>
 
-          {/* Message Text */}
           <p className="text-gray-900 text-base leading-relaxed">
             {displayMessage}
           </p>
 
-          {/* Buttons */}
           <div className="flex flex-wrap gap-3">
             {displayButtons.map((buttonText, index) => (
               <Button
@@ -51,8 +48,5 @@ const GreetingMessage = React.forwardRef<HTMLDivElement, GreetingMessageProps>(
     );
   }
 );
-
-GreetingMessage.displayName = "GreetingMessage";
-
 export { GreetingMessage };
 

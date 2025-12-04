@@ -14,6 +14,7 @@ import {
   ArrowLeftOutlined,
   LeftOutlined,
   FileTextOutlined,
+  CheckOutlined,
 } from '@ant-design/icons';
 
 // Wrapper components to maintain API compatibility
@@ -84,4 +85,8 @@ export const Tune: React.FC<{ className?: string }> = ({ className }) => (
 
 export const AIIcon: React.FC<{ className?: string }> = ({ className }) => (
   <img src={aiIconSvg} alt='ai-icon' width={15} height={15} className={className} />
+);
+
+export const Check: React.FC<{ className?: string }> = ({ className }) => (
+  <CheckOutlined className={className} />
 );

@@ -25,6 +25,7 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
   ({ 
     question,
     index,
+    totalQuestions,
     onQuestionUpdate, 
     onAddQuestion, 
     onDeleteQuestion,
@@ -185,7 +186,8 @@ const QuestionCard = React.forwardRef<HTMLDivElement, QuestionCardProps>(
               size="sm"
               className="h-8 w-8 bg-error-100 text-error-500 rounded-sm focus:ring-0 focus:ring-offset-0"
               onClick={() => setShowDeleteModal(true)}
-              title="Delete this question"
+              disabled={totalQuestions <= 1}
+              title={totalQuestions <= 1 ? "Cannot delete the last question" : "Delete this question"}
             >
               <Trash className="h-4 w-4" />
             </Button>

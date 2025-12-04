@@ -39,7 +39,7 @@ export type { NumberInputProps } from "./NumberInput";
 export { QuestionCard, AddQuestionButton } from "./QuestionCard";
 export { OptionRow } from "./OptionRow";
 export { DragHandle } from "./DragHandle";
-export { Plus, Trash, GripVertical, Clock, Grid, User, Bell, ChevronDown, ChevronUp, Api, ArrowLeft, Left, FileText, Tune, AIIcon } from "../assets/icons";
+export { Plus, Trash, GripVertical, Clock, Grid, User, Bell, ChevronDown, ChevronUp, Api, ArrowLeft, Left, FileText, Tune, AIIcon, Check } from "../assets/icons";
 export { default as ScreeningQuestions } from "./ScreeningQuestions";
 export { GreetingMessage } from "./GreetingMessage";
 export type { GreetingMessageProps } from "./GreetingMessage";
