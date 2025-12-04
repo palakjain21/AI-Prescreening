@@ -11,7 +11,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       default: "rounded-lg border bg-white text-gray-900 shadow-sm",
       question: "rounded-lg border border-neutral-100 bg-white px-4 shadow-sm hover:shadow-md transition-shadow",
       greeting: "rounded-lg bg-green-100 p-6 shadow-sm",
-      ending: "rounded-lg border border-neutral-100 bg-white p-6 shadow-sm",
+      ending: "rounded-lg bg-green-100 p-6 shadow-sm",
     };
 
     return (

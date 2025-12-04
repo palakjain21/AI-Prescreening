@@ -62,6 +62,7 @@ export default {
         "deep-blue": "rgb(10 24 97 / 1)",
       
         neutral: {
+          50: "rgb(248 248 248 / 1)",
           100: "rgb(196 201 202 / 1)",
           150: "rgba(191, 191, 191)",
           lightest: "rgba(240, 240, 241, 1)",
